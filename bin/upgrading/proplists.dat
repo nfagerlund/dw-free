@@ -574,6 +574,14 @@ userproplist.js_animations_minimal:
   multihomed: 0
   prettyname: Use minimal JS animations
 
+userproplist.js_disable_rte:
+  cldversion: 4
+  datatype: bool
+  des: Completely disable the rich text editor
+  indexed: 0
+  multihomed: 0
+  prettyname: Completely disable the RTE
+
 userproplist.last_fm_user:
   cldversion: 4
   datatype: char

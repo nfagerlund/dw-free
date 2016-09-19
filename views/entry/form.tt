@@ -43,6 +43,9 @@ the same terms as Perl itself.  For a copy of the license, please reference
     "js/vendor/pickadate.js/legacy.js"
     "stc/css/components/pickadate/datetime.css"
 
+    ## rte
+    "stc/ckeditor/ckeditor.js"
+
     # page-specific
     "js/pages/entry/new.js"
 
@@ -60,6 +63,13 @@ postFormInitData.edit = [% action.edit ? "true" : "false" %];
 postFormInitData.icons = [
     [%- FOREACH icon = icons %]
         { 'src': '[% icon.userpic.url %]', 'alt': [% icon.userpic.description | js %] }
+        [%- UNLESS loop.last %],[% END -%]
+    [% END %]
+];
+
+postFormInitData.sitelist = [
+    [%- FOREACH site = sitelist %]
+        { 'sitename': '[% site.sitename %]', 'domain': [% site.dom | js %] }
         [%- UNLESS loop.last %],[% END -%]
     [% END %]
 ];
@@ -98,6 +108,7 @@ postFormInitData.security = {
 };
 
 postFormInitData.minAnimation = [% min_animation ? "true" : "false" %];
+postFormInitData.disableRTE = [% disable_rte ? "true" : "false" %];
 
 postFormInitData.strings = {
   "delete_confirm" : [%- "entryform.delete.confirm" | ml | js -%],
@@ -112,6 +123,9 @@ postFormInitData.did_spellcheck = [% spellcheck.did_spellcheck ? "true" : "false
         "smallicons": [%- icon_browser.smallicons ? "true": "false" -%]
     };
 [%- END -%]
+
+postFormInitData.rteMode = "[%- remote.new_entry_editor -%]";
+postFormInitData.usedRTE = [% formdata.used_rte ? "true" : "false" %];
 
 </script>
 [% END  # sections.head %]
@@ -208,6 +222,14 @@ postFormInitData.did_spellcheck = [% spellcheck.did_spellcheck ? "true" : "false
                     placeholder = dw.ml(".event.placeholder")
                 ) -%]
             </div>
+            <div class="panel radius toolbar" id="js-modes-panel">
+                [%- form.checkbox_nested( label = dw.ml(".preformatted.label")
+                    name = "preformatted"
+                    id = "preformatted"
+                    value = formdata.preformatted
+                ) -%]
+                [%- form.hidden( id = "switched_rte_on", name = "switched_rte_on", value = 1 ) -%]
+            </div>
         </div></div>
 
         <div class="row"><div class="columns">
@@ -256,7 +278,6 @@ postFormInitData.did_spellcheck = [% spellcheck.did_spellcheck ? "true" : "false
                     [%- SET usejournal  = journallist.first
                             isComm      = usejournal.is_community
                             isAdmin     = isComm && remote.can_manage( usejournal )
-
                     ~%]
 
                     [%~ IF usejournal ~%]
