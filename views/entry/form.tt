@@ -223,7 +223,7 @@ postFormInitData.usedRTE = [% formdata.used_rte ? "true" : "false" %];
                 ) -%]
             </div>
             <div class="panel radius toolbar" id="js-modes-panel">
-                [%- form.checkbox_nested( label = dw.ml(".preformatted.label")
+                [%- form.checkbox_nested( label = dw.ml(".preformatted2.label")
                     name = "preformatted"
                     id = "preformatted"
                     value = formdata.preformatted

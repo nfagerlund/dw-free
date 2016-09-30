@@ -71,4 +71,4 @@
 
 .title.edit=Edit Entry
 
-.preformatted.label=Preformatted
+.preformatted2.label=Do not auto-convert newlines

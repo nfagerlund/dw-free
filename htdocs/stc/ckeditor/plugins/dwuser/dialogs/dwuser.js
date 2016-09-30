@@ -73,15 +73,17 @@ CKEDITOR.dialog.add( 'dwuserDialog', function( editor ) {
                 this.insertMode = true;
 
                 element = editor.document.createElement( 'span' );
-                element.setAttribute( 'name', '');
+                if ( selection.getSelectedText() ) {
+                    element.setAttribute( 'name', selection.getSelectedText() );
+                    this.setupContent( element );
+                } else {
+                    element.setAttribute( 'name', '' );
+                }
                 element.addClass( 'ljuser' );
 
-                img = editor.document.createElement( 'img' );
-                img.setAttribute( 'src', window.parent.site_p.imgprefix + "/silk/identity/user.png");
-                img.setAttribute( 'alt', "[personal profile ]" );
-                element.append( img );
             } else {
                 this.insertMode = false;
+                this.oldElement = element;
             }
             this.element = element;
             if ( !this.insertMode )
@@ -96,6 +98,12 @@ CKEDITOR.dialog.add( 'dwuserDialog', function( editor ) {
                 return;
             }
             if ( ! user.getAttribute( 'site' ) ) {
+                user = user.clone(false);
+                img = editor.document.createElement( 'img' );
+                img.setAttribute( 'src', window.parent.site_p.imgprefix + "/silk/identity/user.png");
+                img.setAttribute( 'alt', "[personal profile ]" );
+                user.setHtml( img.getOuterHtml() );
+
                 var strong = editor.document.createElement( 'strong' );
                 strong.setText( user.getAttribute( 'name' ) );
                 var link = editor.document.createElement( 'a' );
@@ -138,10 +146,15 @@ CKEDITOR.dialog.add( 'dwuserDialog', function( editor ) {
                     }
                 });
             }
+
             // This prevents span recognition in the htmlparser...boo.
-            //user.setAttribute( 'contenteditable', "false" );
-            if ( this.insertMode )
+            user.setAttribute( 'contenteditable', "false" );
+            if ( this.insertMode ) {
                 editor.insertElement( user );
+            } else {
+                user.replace( this.oldElement );
+                editor.getSelection().selectElement( user );
+            }
         }
     };
 });

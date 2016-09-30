@@ -81,6 +81,7 @@ CKEDITOR.plugins.add( 'dwformat', {
             element.name = 'span';
             element.attributes.class = 'ljuser';
             element.children = [ img, link ];
+            element.attributes.contenteditable = "false";
         };
 
         var dwcodeFilter = new CKEDITOR.htmlParser.filter( {

@@ -733,12 +733,16 @@ var postForm = (function($) {
             if ( ed.mode === "source" ) {
                 // Going from wysiwyg to source mode
                 $("#preformatted").removeAttr("disabled");
+                $("#preformatted").removeAttr("hidden");
+                $("label[for='preformatted']").removeAttr("hidden");
                 $("#switched_rte_on").val(0);
             } else {
                 // Going from source to wysiwyg mode
                 $("#switched_rte_on").val(1);
                 $("#preformatted").prop("checked", true);
                 $("#preformatted").attr("disabled", true);
+                $("#preformatted").attr("hidden", true);
+                $("label[for='preformatted']").attr("hidden", true);
             }
         } );
     };
