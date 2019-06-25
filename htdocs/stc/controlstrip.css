@@ -33,6 +33,14 @@ html body
     flex-grow: 1;
 }
 
+/* Don't let the divs get too lonely at huge widths */
+@media only screen and (min-width: 1280px) {
+    #lj_controlstrip > div {
+        flex-grow: 0;
+        margin-right: 20px;
+    }
+}
+
 /* Userpic doesn't need extra spacing around it, and absent userpics
    shouldn't take up space */
 #lj_controlstrip #lj_controlstrip_userpic,
@@ -40,6 +48,7 @@ html body
 {
     flex-grow: 0;
     padding: 0;
+    margin-right: 0;
 }
 
 #lj_controlstrip a
