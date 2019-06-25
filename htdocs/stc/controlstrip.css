@@ -94,16 +94,12 @@ html body
     border: 0;
 }
 
-/* Make sure all form elements use default colors and control strip fonts */
+/* Make sure all form elements use control strip fonts */
 #lj_controlstrip input
 {
     font-family: Arial, sans-serif;
     font-size: 11px;
     line-height: 16.5px;
-    background-color: revert;
-    color: revert;
-    padding: revert;
-    margin: revert;
     width: auto;
     text-transform: none;
 }
@@ -118,10 +114,6 @@ html body
     font-family: Arial, sans-serif;
     font-size: 11px;
     line-height: 16.5px;
-    background-color: revert;
-    color: revert;
-    padding: 0;
-    margin: 0;
 }
 
 #lj_controlstrip input#xc_user,
