@@ -100,10 +100,10 @@ html body
     font-family: Arial, sans-serif;
     font-size: 11px;
     line-height: 16.5px;
-    background-color: initial;
-    color: initial;
-    padding: initial;
-    margin: initial;
+    background-color: revert;
+    color: revert;
+    padding: revert;
+    margin: revert;
     width: auto;
     text-transform: none;
 }
@@ -118,8 +118,8 @@ html body
     font-family: Arial, sans-serif;
     font-size: 11px;
     line-height: 16.5px;
-    background-color: initial;
-    color: initial;
+    background-color: revert;
+    color: revert;
     padding: 0;
     margin: 0;
 }
