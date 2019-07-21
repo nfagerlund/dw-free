@@ -110,6 +110,7 @@ sub clean {
     # remove the auth portion of any see_request links
     $$data = LJ::strip_request_auth($$data);
 
+    utf8::decode($$data);
     my $p = HTML::TokeParser->new($data);
 
     my $wordlength              = $opts->{'wordlength'};
@@ -303,7 +304,7 @@ TOKEN:
         {
             my $tag       = $update_tag->( $token->[1] );
             my $attr      = $token->[2];                                     # hashref
-            my $ljcut_div = $tag eq "div" && lc $attr->{class} eq "ljcut";
+            my $ljcut_div = $tag eq "div" && defined $attr->{class} && lc $attr->{class} eq "ljcut";
 
             $good_until = length $newdata;
 
@@ -394,7 +395,7 @@ TOKEN:
                 $attr->{value} = "sameDomain" if $attr->{value} ne 'never';
             }
 
-            if ( $tag eq "span" && lc $attr->{class} eq "ljuser" && !$noexpand_embedded ) {
+            if ( $tag eq "span" && defined $attr->{class} && lc $attr->{class} eq "ljuser" && !$noexpand_embedded ) {
                 $eating_ljuser_span = 1;
                 $ljuser_text_node   = "";
             }
@@ -404,7 +405,7 @@ TOKEN:
             }
 
             # deprecated - will always print an error msg (see #1869)
-            if ( ( $tag eq "div" || $tag eq "span" ) && lc $attr->{class} eq "ljvideo" ) {
+            if ( ( $tag eq "div" || $tag eq "span" ) && defined $attr->{class} && lc $attr->{class} eq "ljvideo" ) {
                 $start_capture->(
                     $tag, $token,
                     sub {
@@ -1345,6 +1346,7 @@ TOKEN:
     # extra-paranoid check
     1 while $newdata =~ s/<script\b//ig;
 
+    utf8::encode($newdata);
     $$data = $newdata;
     $$data .= $extra_text if $extra_text;    # invalid markup error
 

@@ -324,8 +324,8 @@ sub _init {
         foreach my $site (sort { $a->{sitename} cmp $b->{sitename} } @sites) {
             push @sitelist, { dom => $site->{domain}, sitename => $site->{sitename} };
         }
-        use Data::Dumper;
-        print STDERR Dumper(@sitelist);
+        ##use Data::Dumper;
+        ##print STDERR Dumper(@sitelist);
 
         # moods
         my $theme = DW::Mood->new( $u->{moodthemeid} );

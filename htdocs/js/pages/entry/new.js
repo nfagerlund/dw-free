@@ -685,16 +685,14 @@ var postForm = (function($) {
             extraPlugins: 'dwformat,dwcut,dwuser,dwembed',
             title: "Rich Text Editor",
             toolbar: [
-                { name: 'document', items: [ 'Source', 'Bold', 'Italic', 'Underline', 'Strike' ] },
-                { name: 'links', items: [ 'Link', 'Unlink', 'Blockquote' ] },
-                { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-',  ] },
-                { name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule', 'SpecialChar' ] },
+                { name: 'fontstuff', items: [ 'Font', 'FontSize' ] },
+                { name: 'clipboard', items: [ 'PasteText', 'PasteFromWord'] },
+                { name: 'insert', items: [ 'Link', 'Unlink', 'Blockquote', 'Anchor', 'EmojiPanel', 'HorizontalRule', 'Image', 'Table', 'CodeSnippet' ] },
                 { name: 'dreamwidth', items: [ 'DWUser', 'DWCut', 'DWEmbed' ] },
+                { name: 'document', items: [ 'Source', '-', 'A11ychecker' ] },
                 '/',
-                { name: 'color', items: [ 'TextColor', 'Font', 'FontSize' ] },
-                { name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
-                { name: 'styles', items: [ 'Styles', 'Format' ] },
-                { name: 'clipboard', items: [ 'PasteFromWord' ] },
+                { name: 'text', items: [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'TextColor', 'BGColor', '-', 'RemoveFormat' ] },
+                { name: 'paragraph', items: [ 'BulletedList', 'NumberedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl' ] },
                 { name: 'tools', items: [ 'Maximize' ] }
             ]
         } );
