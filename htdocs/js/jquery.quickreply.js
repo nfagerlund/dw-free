@@ -23,14 +23,15 @@ function update(data,widget) {
         data.dtid = data.target;
     } else {
         data.dtid = 0;
+        data.journalDomain = targetParts[1].replace("_", "-") + "." + Site.user_domain;
         $("#journal").val(targetParts[1]);
         $("#itemid").val(targetParts[2]);
-        $("#basepath").val(document.location.protocol + "//" +
-                            targetParts[1].replace("_", "-") + "." + Site.user_domain +
+        $("#basepath").val(document.location.protocol + "//" + data.journalDomain +
                             "/" + targetParts[2] + ".html?");
         data.stayOnPage = true;
     }
     $("#qrform").data("stayOnPage", data.stayOnPage);
+    $("#qrform").data("journalDomain", data.journalDomain);
 
     $("#parenttalkid, #replyto").val(data.pid);
     $("#dtid").val(data.dtid);
@@ -48,6 +49,8 @@ function update(data,widget) {
         customsubject = true;
     if ( ! customsubject || cur_subject == "" )
         subject.val(data.subject);
+
+    $("#prop_picture_keyword").change();
 
     // If we previously munged the layout of #qrformdiv, reset it.
     $('#qrformdiv').removeAttr('style').removeClass('width-adjusted');
@@ -106,6 +109,7 @@ $.widget("dw.quickreply", {
     options: {
         target: undefined,
         stayOnPage: false,
+        journalDomain: undefined,
         dtid: undefined,
         pid: undefined,
         subject: undefined
@@ -225,18 +229,38 @@ jQuery(function($) {
         $("#qrform").attr("action", Site.siteroot + "/talkpost_do" );
     });
     $("#submitmoreopts").on("click", function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var qrform = $("#qrform");
         var replyto = Number($("#dtid").val());
         var pid = Number($("#parenttalkid").val());
         var basepath = $("#basepath").val();
 
         if(replyto > 0 && pid > 0) {
-            $("#qrform").attr("action", basepath + "replyto=" + replyto );
+            qrform.attr("action", basepath + "replyto=" + replyto );
         } else {
-            $("#qrform").attr("action", basepath + "mode=reply" );
+            qrform.attr("action", basepath + "mode=reply" );
         }
 
-        $("#qrform").data("stayOnPage", false);
+        qrform.data("stayOnPage", false);
+
+        var journalDomain = qrform.data("journalDomain");
+
+        if ( fetch && journalDomain && journalDomain !== document.location.hostname ) {
+            // Make a bogus request to the other journal to ensure our cookies
+            // are in order before we submit. This protects your comment text
+            // when replying from the reading page.
+            fetch(document.location.protocol + '//' + journalDomain + '/robots.txt',
+                {mode: 'no-cors', credentials: 'include'}
+            ).then(function(response) {
+                qrform.submit();
+            });
+        } else {
+            qrform.submit();
+        }
     });
+
 });
 
 
