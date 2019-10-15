@@ -17,6 +17,7 @@ the same terms as Perl itself.  For a copy of the license, please reference
 [%- dw.need_res(
     "stc/css/pages/entry/new.css"
     "stc/css/components/button-groups.css"
+    "stc/trix.css"
 ) -%]
 
 [%- dw.need_res( { group => "foundation" },
@@ -45,6 +46,9 @@ the same terms as Perl itself.  For a copy of the license, please reference
 
     # page-specific
     "js/pages/entry/new.js"
+
+    # RTE
+    "js/trix.js"
 
 ) -%]
 
@@ -196,17 +200,9 @@ postFormInitData.did_spellcheck = [% spellcheck.did_spellcheck ? "true" : "false
 
         <div class="row"><div class="columns">
             <div class='event-container'>
-                [%- form.textarea( label = dw.ml(".event.label")
-                    name = "event"
 
-                    cols = "50"
-                    rows = "18"
-                    wrap = "soft"
-
-                    labelclass = "hidden"
-
-                    placeholder = dw.ml(".event.placeholder")
-                ) -%]
+                <input type="hidden" name="event" id="trix-target" />
+                <trix-editor input="trix-target"></trix-editor>
             </div>
         </div></div>
 
