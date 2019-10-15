@@ -200,9 +200,20 @@ postFormInitData.did_spellcheck = [% spellcheck.did_spellcheck ? "true" : "false
 
         <div class="row"><div class="columns">
             <div class='event-container'>
+                [%- form.textarea( label = dw.ml(".event.label")
+                    name = "event"
+                    id   = "event"
 
-                <input type="hidden" name="event" id="trix-target" />
-                <trix-editor input="trix-target"></trix-editor>
+                    cols = "50"
+                    rows = "18"
+                    wrap = "soft"
+
+                    labelclass = "hidden"
+
+                    placeholder = dw.ml(".event.placeholder")
+                    style = "display: none;"
+                ) -%]
+                <trix-editor input="event"></trix-editor>
             </div>
         </div></div>
 
