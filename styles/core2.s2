@@ -587,8 +587,7 @@ class Page
 
     var readonly string[] views_order "An array of view identifiers which can be used to order the views hash.";
     var readonly string head_content
-    "Extra tags supplied by the server to go in the <head> section of the output HTML document. Layouts
-    should include this in the head section if they are writing HTML.";
+    "Extra tags supplied by the server to go in the <head> section of the output HTML document. This is owned by the mandatory Page::print_head function.";
 
     var readonly bool show_control_strip
     "Whether the control strip will be shown on the current page.";
@@ -664,7 +663,10 @@ class Page
 
     function print_wrapper_start() "Start the body wrapper for this page; includes default classes";
     function print_wrapper_start(string{} opts) "Start the body wrapper for this page; includes default classes and takes a hash using the key 'class'";
-    function print_wrapper_end() "End the body wrapper for this entry or comment.";
+    function print_wrapper_end() [fixed] "End the body wrapper for this entire page. This
+    function MUST be included at the point in your page markup where the
+    closing </body> tag would appear. Overriding or omitting this function WILL break your layout.";
+
     function print_entry_footer(Entry e) "Close up the entry";
 
     function print_time
@@ -678,8 +680,18 @@ class Page
     the recent set of journal entries, recent friends entries, or rows of user information";
 
     function print_head [fixed]
-    "Print server side supplied head content. This is a fixed function, so you can't override it. See
+    "Print server-supplied head content. This function MUST be included near the end of the <head>
+    element. Overriding or omitting this function WILL break your layout. See
     [method[Page.print_custom_head()]] if you want to supply custom head content.";
+
+    function print_head_internal [fixed]
+    "An internal implementation detail of print_head. This is a fixed function, so you can't override it.";
+
+    function builtin defer_print_head [fixed]
+    "An internal implementation detail of print_head. This is a fixed function, so you can't override it.";
+
+    function builtin finalize_print_head [fixed] : string
+    "An internal implementation detail of print_head. This is a fixed function, so you can't override it.";
 
     function builtin print_control_strip [fixed]
     "Prints a control strip for the user's convenience";
@@ -728,9 +740,6 @@ class Page
 
     function print_theme_stylesheet
     "Prints theme-specific CSS. Should be overwritten by themes that include CSS not part of the layout's default stylesheet.";
-
-    function builtin print_script_tags
-    "Prints the JavaScript tags that this page requires. Used in Page::print_wrapper_end. Do not override this.";
 
     function builtin print_trusted(string key)
     "Prints a trusted string by key.";
@@ -4025,7 +4034,10 @@ function Page::print_wrapper_start(string{} opts)
 function Page::print_wrapper_end()
 "This function concludes the wrapper to the page.  Overriding this function is NOT RECOMMENDED. Overriding this function could prevent sitewide improvements to styles, accessibility, or other functionality from operating in your layout."
 {
-    $this->print_script_tags();
+    var string captured_body = $this->finalize_print_head();
+
+    $this->print_head_internal();
+    print $captured_body;
     """</body>""";
 }
 
@@ -5002,6 +5014,10 @@ function Page::print_navigation() { $this->print_navigation( { "" => "" } ); }
 function Page::print_navigation( string{} opts ) {}
 
 function Page::print_head() {
+    $this->defer_print_head();
+}
+
+function Page::print_head_internal() {
     print $.head_content;
     $this->print_custom_head();
 }

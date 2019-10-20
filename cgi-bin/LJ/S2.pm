@@ -225,15 +225,6 @@ sub make_journal {
             )
     );
 
-    # this will cause double-JS and likely cause issues if called during siteviews
-    # as this is done once the page is out of S2's control.
-    unless ( $ctx->[S2::SCRATCH]->{siteviews_enabled} || $view eq "res" ) {
-        $page->{head_content} .= LJ::res_includes_head();    # CSS
-
-        $page->{head_content} .= get_script_tags($page)
-            if $LJ::ACTIVE_RES_GROUP eq "jquery";    # Foundation puts scripts at end of body
-    }
-
     $page->{head_content} .= LJ::PageStats->new->render_head('journal');
 
     s2_run( $apache_r, $ctx, $opts, $entry, $page );
@@ -2431,6 +2422,7 @@ sub Page {
     my $p = {
         '_type'          => 'Page',
         '_u'             => $u,
+        '_input_captures'=> [],
         'view'           => '',
         'args'           => \%args,
         'journal'        => User($u),
@@ -4023,12 +4015,73 @@ sub Comment__print_unhide_link {
     );
 }
 
-sub Page__print_script_tags {
+# print_head DOESN'T ACTUALLY PRINT THE SERVER-SPECIFIED HEAD CONTENT. That
+# happens down in Page::print_wrapper_end. Instead, this starts capturing
+# everything AFTER the place where server-side head content should go. Later,
+# after we've built the entire interior of the page and know everything that got
+# need_res'd into the head, we print the head and then dump the rest of the
+# page.
+sub Page__defer_print_head {
     my ( $ctx, $this ) = @_;
-    if ( $LJ::ACTIVE_RES_GROUP eq "foundation" ) {
-        $S2::pout->( LJ::S2::get_script_tags($this) );
-    }
+
+    # force flush
+    S2::get_output()->("");
+
+    push @{ $this->{_input_captures} }, $LJ::S2::ret_ref;
+    my $text = "";
+    $LJ::S2::ret_ref = \$text;
 }
+
+*RecentPage__defer_print_head  = \&Page__defer_print_head;
+*DayPage__defer_print_head     = \&Page__defer_print_head;
+*MonthPage__defer_print_head   = \&Page__defer_print_head;
+*YearPage__defer_print_head    = \&Page__defer_print_head;
+*FriendsPage__defer_print_head = \&Page__defer_print_head;
+*EntryPage__defer_print_head   = \&Page__defer_print_head;
+*ReplyPage__defer_print_head   = \&Page__defer_print_head;
+*TagsPage__defer_print_head    = \&Page__defer_print_head;
+
+# And now the other shoe drops!
+# Note that this will cause double-JS and likely cause issues if called during
+# siteviews as this is done once the page is out of S2's control.
+sub Page__finalize_print_head {
+    my ( $ctx, $this ) = @_;
+
+    my $captured_body = "";
+
+    # Retrieve everything we've been stashing until now:
+    if ( scalar( @{ $this->{_input_captures} } ) ) {
+        # force flush
+        S2::get_output()->("");
+        my $text_ref = $LJ::S2::ret_ref;
+        $LJ::S2::ret_ref = pop @{ $this->{_input_captures} };
+        $captured_body = $$text_ref;
+    }
+
+    # Finally call res_includes, so we can lazy-load anything that got dragged
+    # in by components during the page body:
+    $this->{head_content} .= LJ::res_includes_head();    # CSS & inline JS
+
+    # jquery puts scripts in head, Foundation puts them at end of body.
+    if ( $LJ::ACTIVE_RES_GROUP eq "jquery" ) {
+        $this->{head_content} .= LJ::S2::get_script_tags($this);
+    } elsif ( $LJ::ACTIVE_RES_GROUP eq "foundation" ) {
+        $captured_body .= LJ::S2::get_script_tags($this);
+    }
+
+    # Finally, return everything we captured. Caller is in charge of calling
+    # print_head_internal, printing this return value, and closing the body tag.
+    return $captured_body;
+}
+
+*RecentPage__finalize_print_head  = \&Page__finalize_print_head;
+*DayPage__finalize_print_head     = \&Page__finalize_print_head;
+*MonthPage__finalize_print_head   = \&Page__finalize_print_head;
+*YearPage__finalize_print_head    = \&Page__finalize_print_head;
+*FriendsPage__finalize_print_head = \&Page__finalize_print_head;
+*EntryPage__finalize_print_head   = \&Page__finalize_print_head;
+*ReplyPage__finalize_print_head   = \&Page__finalize_print_head;
+*TagsPage__finalize_print_head    = \&Page__finalize_print_head;
 
 sub Page__print_trusted {
     my ( $ctx, $this, $key ) = @_;

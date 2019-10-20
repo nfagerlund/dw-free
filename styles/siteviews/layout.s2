@@ -22,7 +22,7 @@ property builtin Siteviews SITEVIEWS {
 function Page::print() {
     if ( $*SITEVIEWS ) {
         $*SITEVIEWS->start_capture();
-        $this->print_head();
+        $this->print_head_internal();
         $this->print_default_stylesheet();
         $this->print_theme_stylesheet();
         $*SITEVIEWS->set_content("head",$*SITEVIEWS->end_capture());
