@@ -443,6 +443,7 @@ class Comment extends EntryLite
     var Image subject_icon "Subject icon, or null.";
     var int talkid "Server stored ID number for this comment.";
     var Comment[] replies "Comments replying to this comment.";
+    var Comment parent "The parent comment of this comment (if applicable).";
     var bool full "True if all information is available for this comment.  False if only the subject, poster, and date are available.  (collapsed threads)";
     var readonly string parent_url "URL to parent comment, or blank if a top-level comment.";
     var readonly string reply_url "URL to reply to this comment.";

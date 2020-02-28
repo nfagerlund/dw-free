@@ -131,7 +131,7 @@ sub EntryPage {
     my ( $last_talkid, $last_jid ) = LJ::get_lastcomment();
 
     my $convert_comments = sub {
-        my ( $self, $destlist, $srclist, $depth ) = @_;
+        my ( $self, $destlist, $srclist, $parent, $depth ) = @_;
 
         foreach my $com (@$srclist) {
             my $pu = $com->{'posterid'} ? $user{ $com->{'posterid'} } : undef;
@@ -260,6 +260,7 @@ sub EntryPage {
                 'reply_url'    => $reply_url,
                 'poster'       => $poster,
                 'replies'      => [],
+                'parent'       => $parent,
                 'subject'      => LJ::ehtml( $com->{'subject'} ),
                 'subject_icon' => $subject_icon,
                 'talkid'       => $dtalkid,
@@ -366,11 +367,11 @@ sub EntryPage {
 
             push @$destlist, $s2com;
 
-            $self->( $self, $s2com->{'replies'}, $com->{'children'}, $depth + 1 );
+            $self->( $self, $s2com->{'replies'}, $com->{'children'}, $s2com, $depth + 1 );
         }
     };
     $p->{'comments'} = [];
-    $convert_comments->( $convert_comments, $p->{'comments'}, \@comments, 1 );
+    $convert_comments->( $convert_comments, $p->{'comments'}, undef, \@comments, 1 );
 
     # prepare the javascript data structure to put in the top of the page
     # if the remote user is a manager of the comments
