@@ -6365,11 +6365,13 @@ function EntryPage::print_comments (Comment[] cs) {
         " comment-depth-$parity comment-depth-mod5-$mod5 comment-depth-$c.depth'>\n";
 
         # Experimental thread focus div
-        """<div class="comment-thread-focus" data-parent-comment="$c.parent.dom_id">""";
-        $c.parent->print_userpic();
-        $c.parent->print_poster();
-        $c.parent->print_subject();
-        """<button type="button">Peek</button> <button type="button">Focus</button> <a href="#$c.parent.dom_id">Jump</a></div>""";
+        if ($c.parent and $c.depth > 1) {
+            """<div class="comment-thread-focus" data-parent-comment="$c.parent.dom_id">""";
+            $c.parent->print_userpic();
+            $c.parent->print_poster();
+            $c.parent->print_subject();
+            """<button type="button">Peek</button> <button type="button">Focus</button> <a href="#$c.parent.dom_id">Jump</a></div>""";
+        }
 
         "<div id='$c.dom_id' class='dwexpcomment' style='";
         if ($*comment_indent_style == "static") {
