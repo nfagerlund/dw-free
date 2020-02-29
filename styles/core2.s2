@@ -6365,7 +6365,7 @@ function EntryPage::print_comments (Comment[] cs) {
         " comment-depth-$parity comment-depth-mod5-$mod5 comment-depth-$c.depth'>\n";
 
         # Experimental thread focus div
-        if ($c.parent and $c.depth > 1) {
+        if (defined $c.parent and $c.depth > 1) {
             """<div class="comment-thread-focus" data-parent-comment="$c.parent.dom_id">""";
             $c.parent->print_userpic();
             $c.parent->print_poster();
