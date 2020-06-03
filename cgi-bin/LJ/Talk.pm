@@ -3087,6 +3087,11 @@ sub post_comment {
     # cluster tracking
     LJ::mark_user_active( $comment->{u}, 'comment' );
 
+    # Update the commenter's preferred formatting.
+    if ( LJ::isu( $comment->{u} ) ) {
+        $comment->{u}->set_prop( comment_editor => $comment->{editor} );
+    }
+
     DW::Stats::increment(
         'dw.action.comment.post',
         1,
