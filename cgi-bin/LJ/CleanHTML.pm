@@ -1940,7 +1940,7 @@ $markup_formats{html}     = $markup_formats{html_casual1};
 
 # Return a group of arguments to pass to clean() based on the requested format
 sub formatting_args {
-    my $format = shift;
+    my $format = $_[0];
     my $args   = $markup_formats{$format};
     unless ( ref $args ) {
         $args = $markup_formats{html_casual1};
