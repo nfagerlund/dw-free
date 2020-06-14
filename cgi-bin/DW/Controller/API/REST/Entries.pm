@@ -391,7 +391,7 @@ sub rest_get {
         # load the rest of our data
         my $entry = {};
         $entry->{subject} = $item->subject_html();
-        $entry->{text} = $item->event_html(0);
+        $entry->{text} = $item->event_html;
         $entry->{poster} = $item->{'u'}{name};
         $entry->{url} = $item->url();
         $entry->{security} = $item->security();
