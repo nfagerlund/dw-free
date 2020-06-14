@@ -50,8 +50,11 @@ our %formats        = (
 
 # Legacy aliases:
 $formats{markdown} = $formats{markdown0};
-
 # $formats{html} = $formats{html_casual1}; # probably not used anywhere?
+
+# Convenience aliases: (for email posts)
+$formats{markdown_latest} = $formats{markdown0};
+$formats{html_casual_latest} = $formats{html_casual1};
 
 # Builds items that can be passed to an LJ::html_select for picking a format.
 # Args: opts hash with the $current format (if editing) and the user's $preferred format.
