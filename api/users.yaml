@@ -1,0 +1,22 @@
+---
+paths:
+  /users/{username}:
+    parameters:
+      - name: username
+        in: path
+        description: The journal you want entry information for
+        required: true
+        schema:
+          type: string
+          minLength: 3
+          maxLength: 25
+          pattern: "^[0-9A-Za-z_]+$"      
+    get:
+      description: Returns information about a specific user.
+      responses:
+        200:
+          description: An array of user information.
+        404:
+          description: No such journal.
+        400:
+          description: Missing or invalid request parameters.
