@@ -400,6 +400,7 @@ sub rest_get {
         my @entry_tags = $item->tags();
         $entry->{tags} = (\@entry_tags);
         $entry->{icon} = $item->userpic() || '';
+        $entry->{editor} = $item->prop('editor');
         $entry->{entry_id} = delete $item->{ditemid};
         #$item->{metadata} = $item->currents;
     
