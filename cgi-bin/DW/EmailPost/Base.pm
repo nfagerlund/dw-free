@@ -343,14 +343,14 @@ sub _choose_editor {
     my ( $self, $format ) = @_;
     $format = lc($format);
 
-    # Email-only short names for the active formats:
+    # Support email-only short names for the active formats:
     $format = 'markdown_latest' if $format eq 'markdown';
     $format = 'html_casual_latest' if $format eq 'html';
 
-    # Unknown formats validate to '', and email posts use a different default
-    # than everything else.
     $format = DW::Formats::validate($format);
-    $format = 'markdown_latest' unless $format;
+
+    # If validate returns '', use an email-specific default.
+    $format = DW::Formats::validate('markdown_latest') unless $format;
 
     return $format;
 }
