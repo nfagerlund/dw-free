@@ -148,7 +148,7 @@ sub _set_props {
     my $props = {};
     $props->{picture_keyword} = $post_headers{userpic}
         || $post_headers{icon};
-    $props->{editor} = _choose_editor( $post_headers{format} );
+    $props->{editor} = $self->_choose_editor( $post_headers{format} );
 
     $self->{props} = $props;
 

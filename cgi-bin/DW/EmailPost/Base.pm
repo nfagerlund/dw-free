@@ -340,7 +340,7 @@ sub _clean_body_and_subject {
 # Convert special email format keywords to the real format IDs used by
 # DW::Formats and LJ::CleanHTML.
 sub _choose_editor {
-    my $format = $_[0];
+    my ( $self, $format ) = @_;
     $format = lc($format);
 
     # Email-only short names for the active formats:
