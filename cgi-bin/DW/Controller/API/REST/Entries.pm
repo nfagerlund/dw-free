@@ -23,6 +23,7 @@ use DW::Request;
 use DW::Controller;
 use JSON;
 use Data::Dumper;
+use DW::Formats;
 
 ################################################
 # /journals/{journal}/entries
@@ -162,6 +163,7 @@ sub _form_to_backend {
     $props->{taglist} = $post->{tags} if defined $post->{tags};
     $props->{picture_keyword} = $post->{icon} if defined $post->{icon};
     $props->{opt_backdated} = $post->{entrytime_outoforder} ? 1 : 0;
+    $props->{editor} = DW::Formats::validate($post->{editor});
     # FIXME
 
     # old implementation of comments

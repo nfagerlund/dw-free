@@ -68,6 +68,9 @@ paths:
                 icon:
                   type: string
                   description: Keyword of icon to use
+                editor:
+                  type: string
+                  description: The markup format to use for the entry text. Must be one of the recognized markup IDs (e.g. `html_casual1` or `markdown0`). Defaults to `html_casual1` if omitted.
                 datetime:
                   type: string
                   description: The date and time of the entry in the format `FIXME`. If omitted, the server time will be used instead.
