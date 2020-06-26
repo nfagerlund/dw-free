@@ -4,10 +4,6 @@
 
 .back=Return to Create Entries pages
 
-.disablerte.header=Rich Text Editor
-
-.disablerte.label=Completely disable the Rich Text Editor (use plain textarea only)
-
 .error.header=Error
 
 .panels.header=Show panels
