@@ -33,7 +33,7 @@ var postForm = (function($) {
         });
 
         $("#js-disable-rte").click(function() {
-            var ed = CKEDITOR.instances['id-event-1']
+            var ed = CKEDITOR.instances.event;
             if ( ed && $(this).is(":checked") ) {
                 ed.destroy();
                 postFormInitData.disableRTE = true;
@@ -670,7 +670,7 @@ var postForm = (function($) {
     };
 
     var initRTE = function($form, $rteMode, $usedRTE, $disableRTE) {
-        $origPost = $("#id-event-1").val();
+        $origPost = $("#event").val();
 
         var useRTE = hasRemote() && (
             ( $origPost.length > 0 ? $usedRTE :
@@ -701,7 +701,7 @@ var postForm = (function($) {
             ]
         } );
         CKEDITOR.config.protectedSource.push( /\n/g );
-        var ed = CKEDITOR.instances['id-event-1'];
+        var ed = CKEDITOR.instances.event;
 
         // Set up first-time window options
         if ( ! useRTE ) {
