@@ -22,6 +22,8 @@ for ( var e in CKEDITOR.tools.extend( {}, dtd.$nonBodyContent, dtd.$block, dtd.$
 CKEDITOR.plugins.add( 'dwformat', {
     init: function( editor ) {
 
+        var convertNewlines = editor.config.dwformat_convert_newlines;
+
         function makecut( element ) {
             element.name = 'div';
             element.attributes.class = 'cuttag-open';
@@ -110,7 +112,7 @@ CKEDITOR.plugins.add( 'dwformat', {
             // Handle processed <poll-###> tags
             c = c.replace( /\<poll-([0-9]+)\>([^<]*)\<\/poll-[0-9]+\>/g, '<poll id=$1></poll>' );
             // Handle auto-formatting for newlines
-            if ( !$("#preformatted").is(":checked") ) {
+            if ( convertNewlines ) {
                 c = c.replace(/\n/g, '<br />\n');
             }
             c = c.replace(/\n/g, '');
@@ -136,7 +138,7 @@ CKEDITOR.plugins.add( 'dwformat', {
                                 if ( c.hasClass( 'title' ) ) {
                                     c.children.forEach( function ( e ) {
                                         if ( e instanceof CKEDITOR.htmlParser.element && e.name == 'span' ) {
-                                            element.attributes['text'] = e.getHtml(); 
+                                            element.attributes['text'] = e.getHtml();
                                         }
                                     });
                                 } else if ( c.hasClass( 'content' ) ) {
@@ -147,7 +149,7 @@ CKEDITOR.plugins.add( 'dwformat', {
                         element.children = [];
                         element.setHtml( content );
                     } else if ( element.hasClass( 'ljembed' ) ) {
-                        element.name = 'site-embed'; 
+                        element.name = 'site-embed';
                         element.removeClass( 'ljembed' );
                     } else if ( element.hasClass( 'ljpoll' ) ) {
                         if ( element.attributes['id'] ) {
@@ -208,7 +210,7 @@ CKEDITOR.plugins.add( 'dwformat', {
         // Priority 1 because we want the raw HTML prior to pseudo-DOM parsing
         editor.on( 'toDataFormat', function( evt ) {
             code = evt.data.dataValue;
-            if ( !$("#preformatted").is(':checked') ) {
+            if ( convertNewlines ) {
                 code = code.replace(/\n/g, '');
                 code = code.replace(/\<br ?\/\>/g, '\n');
                 code = code.replace(/&nbsp;/g, ' ');
