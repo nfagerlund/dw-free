@@ -1940,6 +1940,12 @@ my %markup_formats = (
         at_mentions => 1,
         noautolinks => 1,
     },
+    rich1 => {
+        formatting  => 'html',
+        addbreaks   => 0,
+        at_mentions => 0,
+        noautolinks => 1,
+    },
 );
 $markup_formats{markdown} = $markup_formats{markdown0};
 $markup_formats{html}     = $markup_formats{html_casual1};

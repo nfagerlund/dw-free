@@ -27,7 +27,7 @@ package DW::Formats;
 
 use strict;
 
-our @active_formats = qw( html_casual1 markdown0 html_raw0 );
+our @active_formats = qw( html_casual1 markdown0 html_raw0 rich1 );
 our $default_format = 'html_casual1';
 
 # obsolete version => newest version:
@@ -63,6 +63,12 @@ our %formats = (
         name => "Markdown",
         description =>
 "Markdown, a lightweight text format that makes paragraphs from normal line breaks and provides shortcuts for the most common HTML tags. Supports \@mentions, and supports real HTML tags for more complex formatting.",
+    },
+    rich1 => {
+        id   => 'rich1',
+        name => "Rich text",
+        description =>
+"A WYSIWYG rich text editor that resembles a desktop word processor.",
     },
 );
 
@@ -102,7 +108,7 @@ sub select_items {
     return {
         selected => $selected,
         items =>
-            [ map { { value => $formats{$_}->{id}, text => $formats{$_}->{name}, } } @formats ],
+            [ map { { value => $formats{$_}->{id}, text => $formats{$_}->{name}, disabled => $formats{$_}->{id} =~ /^rich/ } } @formats ],
     };
 }
 
