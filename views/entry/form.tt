@@ -104,7 +104,6 @@ postFormInitData.security = {
 };
 
 postFormInitData.minAnimation = [% min_animation ? "true" : "false" %];
-postFormInitData.disableRTE = [% disable_rte ? "true" : "false" %];
 
 postFormInitData.strings = {
   "delete_confirm" : [%- "entryform.delete.confirm" | ml | js -%],
@@ -117,9 +116,6 @@ postFormInitData.strings = {
         "smallicons": [%- icon_browser.smallicons ? "true": "false" -%]
     };
 [%- END -%]
-
-postFormInitData.rteMode = "[%- remote.new_entry_editor -%]";
-postFormInitData.usedRTE = [% formdata.used_rte ? "true" : "false" %];
 
 </script>
 [% END  # sections.head %]
@@ -225,14 +221,6 @@ postFormInitData.usedRTE = [% formdata.used_rte ? "true" : "false" %];
 
                     placeholder = dw.ml(".event.placeholder")
                 ) -%]
-            </div>
-            <div class="panel radius toolbar" id="js-modes-panel">
-                [%- form.checkbox_nested( label = dw.ml(".preformatted2.label")
-                    name = "preformatted"
-                    id = "preformatted"
-                    value = formdata.preformatted
-                ) -%]
-                [%- form.hidden( id = "switched_rte_on", name = "switched_rte_on", value = 1 ) -%]
             </div>
         </div></div>
 

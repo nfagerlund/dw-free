@@ -93,20 +93,6 @@ the same terms as Perl itself.  For a copy of the license, please reference
     </div></fieldset>
 
     <fieldset class="row"><div class="columns">
-        <legend><span>[% '.disablerte.header' | ml %]</span></legend>
-            [%- disablerte_label = '.disablerte.label' | ml;
-                form.checkbox_nested(
-                    label = disablerte_label
-                    id = 'js-disable-rte'
-                    name = 'disable_rte'
-                    value = '1'
-                ) -%]
-            </li>
-        </ul>   
-    </div></fieldset>
-
-
-    <fieldset class="row"><div class="columns">
         [% form.submit( value = dw.ml( ".submit" ) ) %]
     </div></fieldset>
 
