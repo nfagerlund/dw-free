@@ -296,6 +296,8 @@ sub _init {
 
     my @icons;
 
+    my @sitelist;
+
     my %moodtheme;
     my @moodlist;
     my $moods = DW::Mood->get_moods;
@@ -316,11 +318,20 @@ sub _init {
     my $panels;
     my $formwidth;
     my $min_animation;
+    my $disable_rte;
     my $displaydate_check;
     if ($u) {
 
         # icons
         @icons = LJ::icon_keyword_menu($u);
+
+        # external sites
+        my @sites = DW::External::Site->get_sites;
+        foreach my $site (sort { $a->{sitename} cmp $b->{sitename} } @sites) {
+            push @sitelist, { dom => $site->{domain}, sitename => $site->{sitename} };
+        }
+        ##use Data::Dumper;
+        ##print STDERR Dumper(@sitelist);
 
         # moods
         my $theme = DW::Mood->new( $u->{moodthemeid} );
@@ -364,6 +375,7 @@ sub _init {
         $panels        = $u->entryform_panels;
         $formwidth     = $u->entryform_width;
         $min_animation = $u->prop("js_animations_minimal") ? 1 : 0;
+        $disable_rte   = $u->prop( "js_disable_rte" ) ? 1 : 0;
         $displaydate_check =
             ( $u->displaydate_check && not $form_opts->{trust_datetime_value} ) ? 1 : 0;
     }
@@ -454,6 +466,8 @@ sub _init {
             smallicons => $u ? $u->iconbrowser_smallicons : "",
         },
 
+        sitelist => \@sitelist,
+
         moodtheme => \%moodtheme,
         moods     => \@moodlist,
 
@@ -481,6 +495,7 @@ sub _init {
         panels        => $panels,
         formwidth     => $formwidth && $formwidth eq "P" ? "narrow" : "wide",
         min_animation => $min_animation ? 1 : 0,
+        disable_rte => $disable_rte ? 1 : 0,
 
         limits => {
             subject_length => LJ::CMAX_SUBJECT,
@@ -1383,6 +1398,12 @@ sub _persist_props {
     #                 $remote->set_prop('entry_draft', '')
     #                     if $remote;
 
+    # Store what editor they last used
+    unless ( $u->prop('editor') =~ m/^always_/ ) {
+        $form->{switched_rte_on} ?
+            $u->set_prop( editor => 'rich' ) :
+            $u->set_prop( editor => 'plain' );
+    }
 }
 
 sub _prepopulate {
@@ -1869,6 +1890,7 @@ sub _options {
             }
 
             $u->set_prop( js_animations_minimal => $post->{minimal_animations} );
+            $u->set_prop( js_disable_rte => $post->{disable_rte} );
         }
         else {
             $errors->add( undef, "error.invalidform" );
@@ -1881,6 +1903,7 @@ sub _options {
         my $default = {
             entry_field_width  => $u->entryform_width,
             minimal_animations => $u->prop("js_animations_minimal") ? 1 : 0,
+            disable_rte        => $u->prop("js_disable_rte") ? 1 : 0,
         };
 
         $default->{$panel_element_name} = _load_visible_panels($u);

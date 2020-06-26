@@ -70,3 +70,5 @@
 .title=Create Entries
 
 .title.edit=Edit Entry
+
+.preformatted2.label=Do not auto-convert newlines

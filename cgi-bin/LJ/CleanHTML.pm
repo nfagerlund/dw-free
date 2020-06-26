@@ -190,6 +190,10 @@ sub clean {
     }
 
     # Do some preprocessing of the input text before we try to parse it as HTML:
+
+    # Zeroth, decode utf-8
+    utf8::decode($$data);
+
     # First, remove the auth portion of any see_request links
     $$data = LJ::strip_request_auth($$data);
 
@@ -318,7 +322,7 @@ TOKEN:
         {
             my $tag       = $update_tag->( $token->[1] );
             my $attr      = $token->[2];                                     # hashref
-            my $ljcut_div = $tag eq "div" && lc $attr->{class} eq "ljcut";
+            my $ljcut_div = $tag eq "div" && defined $attr->{class} && lc $attr->{class} eq "ljcut";
 
             $good_until = length $newdata;
 
@@ -410,6 +414,7 @@ TOKEN:
             }
 
             if (   $tag eq "span"
+                && defined $attr->{class}
                 && lc $attr->{class} eq "ljuser"
                 && !$noexpand_embedded
                 && !$nodwtags )
@@ -423,7 +428,7 @@ TOKEN:
             }
 
             # deprecated - will always print an error msg (see #1869)
-            if ( ( $tag eq "div" || $tag eq "span" ) && lc $attr->{class} eq "ljvideo" ) {
+            if ( ( $tag eq "div" || $tag eq "span" ) && defined $attr->{class} && lc $attr->{class} eq "ljvideo" ) {
                 $start_capture->(
                     $tag, $token,
                     sub {
@@ -1361,6 +1366,7 @@ TOKEN:
     # extra-paranoid check
     1 while $newdata =~ s/<script\b//ig;
 
+    utf8::encode($newdata);
     $$data = $newdata;
     $$data .= $extra_text if $extra_text;    # invalid markup error
 

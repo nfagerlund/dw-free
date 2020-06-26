@@ -1,0 +1,8 @@
+div.ljpoll {
+  display: block;
+  border: #000 1px dotted;
+  background: #d2d2d2 url(/stc/ckeditor/plugins/dwformat/icons/ljpoll.gif) 5px 5px no-repeat;
+  font-style: italic;
+  height: 30px;
+  font-size: 0px;
+}
