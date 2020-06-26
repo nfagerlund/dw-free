@@ -28,20 +28,20 @@ var postForm = (function($) {
                 $settings.load(Site.siteroot + "/__rpc_entryoptions", function(html,status,jqxhr) {
                     $(this).slideDown();
                     $link.removeClass( "spinner" );
-                    $("#js-disable-rte").click(function() {
-                        var ed = CKEDITOR.instances['id-event-1']
-                        if ( ed && $(this).is(":checked") ) {
-                            ed.destroy();
-                            postFormInitData.disableRTE = true;
-                        }
-                        if ( !ed && !$(this).is(":checked") && postFormInitData ) {
-                            var entryForm = $("#js-post-entry");
-                            postFormInitData.disableRTE = false;
-                            initRTE(entryForm, postFormInitData.rteMode, postFormInitData.usedRTE, postFormInitData.disableRTE);
-                        }
-                    });
                 })
+            }
+        });
 
+        $("#js-disable-rte").click(function() {
+            var ed = CKEDITOR.instances['id-event-1']
+            if ( ed && $(this).is(":checked") ) {
+                ed.destroy();
+                postFormInitData.disableRTE = true;
+            }
+            if ( !ed && !$(this).is(":checked") && postFormInitData ) {
+                var entryForm = $("#js-post-entry");
+                postFormInitData.disableRTE = false;
+                initRTE(entryForm, postFormInitData.rteMode, postFormInitData.usedRTE, postFormInitData.disableRTE);
             }
         });
 
@@ -673,8 +673,8 @@ var postForm = (function($) {
         $origPost = $("#id-event-1").val();
 
         var useRTE = hasRemote() && (
-            ( $origPost.length > 0 ? $usedRTE : 
-              ( $rteMode === "rich" ? true : false ) 
+            ( $origPost.length > 0 ? $usedRTE :
+              ( $rteMode === "rich" ? true : false )
             )
         );
 
