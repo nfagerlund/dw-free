@@ -32,18 +32,18 @@ var postForm = (function($) {
             }
         });
 
-        $("#js-disable-rte").click(function() {
-            var ed = CKEDITOR.instances.event;
-            if ( ed && $(this).is(":checked") ) {
-                ed.destroy();
-                postFormInitData.disableRTE = true;
-            }
-            if ( !ed && !$(this).is(":checked") && postFormInitData ) {
-                var entryForm = $("#js-post-entry");
-                postFormInitData.disableRTE = false;
-                initRTE(entryForm, postFormInitData.rteMode, postFormInitData.usedRTE, postFormInitData.disableRTE);
-            }
-        });
+//         $("#js-disable-rte").click(function() {
+//             var ed = CKEDITOR.instances.event;
+//             if ( ed && $(this).is(":checked") ) {
+//                 ed.destroy();
+//                 postFormInitData.disableRTE = true;
+//             }
+//             if ( !ed && !$(this).is(":checked") && postFormInitData ) {
+//                 var entryForm = $("#js-post-entry");
+//                 postFormInitData.disableRTE = false;
+//                 initRTE(entryForm, postFormInitData.rteMode, postFormInitData.usedRTE, postFormInitData.disableRTE);
+//             }
+//         });
 
         $.fx.off = minAnimation;
     };
@@ -669,24 +669,22 @@ var postForm = (function($) {
 
     };
 
-    var initRTE = function($form, $rteMode, $usedRTE, $disableRTE) {
-        $origPost = $("#event").val();
+    var startRTE = function($form, fromFormat) {
+        if ( !CKEDITOR.env.isCompatible ) {
+            return false;
+        }
 
-        var useRTE = hasRemote() && (
-            ( $origPost.length > 0 ? $usedRTE :
-              ( $rteMode === "rich" ? true : false )
-            )
-        );
+        var convertNewLines = false;
 
-        if ( !CKEDITOR.env.isCompatible || $disableRTE ) {
-            $("#switched_rte_on").val(0);
-            return;
+        if ( fromFormat.match(/^html_casual[01]/) ) {
+            convertNewLines = true;
         }
 
         CKEDITOR.replace( 'event', {
             disableNativeSpellChecker: false,
             allowedContent: true,
             extraPlugins: 'dwformat,dwcut,dwuser,dwembed',
+            dwformat_convert_newlines: convertNewLines,
             title: "Rich Text Editor",
             toolbar: [
                 { name: 'fontstuff', items: [ 'Font', 'FontSize' ] },
@@ -703,51 +701,147 @@ var postForm = (function($) {
         CKEDITOR.config.protectedSource.push( /\n/g );
         var ed = CKEDITOR.instances.event;
 
-        // Set up first-time window options
-        if ( ! useRTE ) {
+        ed.on( 'instanceReady', function( evt) {
+            evt.editor.dataProcessor.writer = new CKEDITOR.htmlWriter();
             $rtefirsttime = 1;
-            ed.on( 'instanceReady', function( evt) {
-                evt.editor.dataProcessor.writer = new CKEDITOR.htmlWriter();
-                $rtefirsttime = 1;
-                // Use line breaks for block elements, tables, and lists.
-                var dtd = CKEDITOR.dtd;
-                for ( var e in CKEDITOR.tools.extend( {}, dtd.$nonBodyContent, dtd.$block, dtd.$listItem, dtd.$tableContent ) ) {
-                    this.dataProcessor.writer.setRules( e, {
-                        indent: true,
-                        breakBeforeOpen: true,
-                        breakAfterOpen: true,
-                        breakBeforeClose: true,
-                        breakAfterClose: false
-                    });
-                }
-                ed.execCommand( 'source' );
-                // Re-set textarea content if editor is supposed to "start up" in source mode
-                if ( $origPost ) {
-                    ed.setData( $origPost );
-                }
-            } );
-        } else {
-            $("#preformatted").prop("checked", true);
-            $("#preformatted").attr("disabled", true);
+            // Use line breaks for block elements, tables, and lists.
+            var dtd = CKEDITOR.dtd;
+            for ( var e in CKEDITOR.tools.extend( {}, dtd.$nonBodyContent, dtd.$block, dtd.$listItem, dtd.$tableContent ) ) {
+                this.dataProcessor.writer.setRules( e, {
+                    indent: true,
+                    breakBeforeOpen: true,
+                    breakAfterOpen: true,
+                    breakBeforeClose: true,
+                    breakAfterClose: false
+                });
+            }
+//             ed.execCommand( 'source' );
+            // Re-set textarea content if editor is supposed to "start up" in source mode
+//             if ( $origPost ) {
+//                 ed.setData( $origPost );
+//             }
+        } );
+
+
+    };
+
+    var stopRTE = function($form, toFormat) {
+        var convertNewLines = false;
+
+        if ( toFormat.match(/^html_casual[01]/) ) {
+            convertNewLines = true;
         }
 
-        ed.on( 'mode', function( event ) {
-            if ( ed.mode === "source" ) {
-                // Going from wysiwyg to source mode
-                $("#preformatted").removeAttr("disabled");
-                $("#preformatted").removeAttr("hidden");
-                $("label[for='preformatted']").removeAttr("hidden");
-                $("#switched_rte_on").val(0);
-            } else {
-                // Going from source to wysiwyg mode
-                $("#switched_rte_on").val(1);
-                $("#preformatted").prop("checked", true);
-                $("#preformatted").attr("disabled", true);
-                $("#preformatted").attr("hidden", true);
-                $("label[for='preformatted']").attr("hidden", true);
-            }
-        } );
+        CKEDITOR.instances.event.config.dwformat_convert_newlines = convertNewLines;
+        CKEDITOR.instances.event.destroy();
     };
+
+    var initFormat = function($form) {
+        var $editorSelect = $form.find('#editor');
+
+        if ( CKEDITOR.env.isCompatible ) {
+            $editorSelect.find('option[value="rich1"]')
+                .removeAttr('disabled')
+                .removeAttr('style');
+        }
+
+        $editorSelect.on('change', function(e) {
+            var previousFormat = $editorSelect.data('previousFormat') || '';
+            var format = $editorSelect.val();
+            if ( format !== previousFormat ) {
+                if (format === 'rich1') {
+                    // Switching to RTE
+                    startRTE($form, previousFormat);
+                } else if ( previousFormat === 'rich1' ) {
+                    // Switching away from RTE
+                    stopRTE($form, format);
+                }
+            }
+            $editorSelect.data('previousFormat', format);
+        });
+
+        $editorSelect.trigger('change');
+    };
+
+//     var initRTE = function($form, $rteMode, $usedRTE, $disableRTE) {
+//         $origPost = $("#event").val();
+//
+//         var useRTE = hasRemote() && (
+//             ( $origPost.length > 0 ? $usedRTE :
+//               ( $rteMode === "rich" ? true : false )
+//             )
+//         );
+//
+//         if ( !CKEDITOR.env.isCompatible || $disableRTE ) {
+//             $("#switched_rte_on").val(0);
+//             return;
+//         }
+//
+//         CKEDITOR.replace( 'event', {
+//             disableNativeSpellChecker: false,
+//             allowedContent: true,
+//             extraPlugins: 'dwformat,dwcut,dwuser,dwembed',
+//             title: "Rich Text Editor",
+//             toolbar: [
+//                 { name: 'fontstuff', items: [ 'Font', 'FontSize' ] },
+//                 { name: 'clipboard', items: [ 'PasteText', 'PasteFromWord'] },
+//                 { name: 'insert', items: [ 'Link', 'Unlink', 'Blockquote', 'Anchor', 'EmojiPanel', 'HorizontalRule', 'Image', 'Table', 'CodeSnippet' ] },
+//                 { name: 'dreamwidth', items: [ 'DWUser', 'DWCut', 'DWEmbed' ] },
+//                 { name: 'document', items: [ 'Source', '-', 'A11ychecker' ] },
+//                 '/',
+//                 { name: 'text', items: [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'TextColor', 'BGColor', '-', 'RemoveFormat' ] },
+//                 { name: 'paragraph', items: [ 'BulletedList', 'NumberedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl' ] },
+//                 { name: 'tools', items: [ 'Maximize' ] }
+//             ]
+//         } );
+//         CKEDITOR.config.protectedSource.push( /\n/g );
+//         var ed = CKEDITOR.instances.event;
+//
+//         // Set up first-time window options
+//         if ( ! useRTE ) {
+//             $rtefirsttime = 1;
+//             ed.on( 'instanceReady', function( evt) {
+//                 evt.editor.dataProcessor.writer = new CKEDITOR.htmlWriter();
+//                 $rtefirsttime = 1;
+//                 // Use line breaks for block elements, tables, and lists.
+//                 var dtd = CKEDITOR.dtd;
+//                 for ( var e in CKEDITOR.tools.extend( {}, dtd.$nonBodyContent, dtd.$block, dtd.$listItem, dtd.$tableContent ) ) {
+//                     this.dataProcessor.writer.setRules( e, {
+//                         indent: true,
+//                         breakBeforeOpen: true,
+//                         breakAfterOpen: true,
+//                         breakBeforeClose: true,
+//                         breakAfterClose: false
+//                     });
+//                 }
+//                 ed.execCommand( 'source' );
+//                 // Re-set textarea content if editor is supposed to "start up" in source mode
+//                 if ( $origPost ) {
+//                     ed.setData( $origPost );
+//                 }
+//             } );
+//         } else {
+//             $("#preformatted").prop("checked", true);
+//             $("#preformatted").attr("disabled", true);
+//         }
+//
+//         ed.on( 'mode', function( event ) {
+//             if ( ed.mode === "source" ) {
+//                 // Going from wysiwyg to source mode
+//                 $("#preformatted").removeAttr("disabled");
+//                 $("#preformatted").removeAttr("hidden");
+//                 $("label[for='preformatted']").removeAttr("hidden");
+//                 $("#switched_rte_on").val(0);
+//             } else {
+//                 // Going from source to wysiwyg mode
+//                 $("#switched_rte_on").val(1);
+//                 $("#preformatted").prop("checked", true);
+//                 $("#preformatted").attr("disabled", true);
+//                 $("#preformatted").attr("hidden", true);
+//                 $("label[for='preformatted']").attr("hidden", true);
+//             }
+//         } );
+//     };
 
     var init = function(formData) {
         $("#nojs").val(0);
@@ -757,7 +851,8 @@ var postForm = (function($) {
 
         initMainForm(entryForm);
         initToolbar(entryForm, formData.minAnimation);
-        initRTE(entryForm, formData.rteMode, formData.usedRTE, formData.disableRTE);
+        // initRTE(entryForm, formData.rteMode, formData.usedRTE, formData.disableRTE);
+        initFormat(entryForm);
         initButtons(entryForm, $( ".crosspost-component" ), formData.strings);
         initCommunitySection(entryForm);
 
