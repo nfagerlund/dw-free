@@ -201,6 +201,9 @@ sub clean {
 
     # Create the HTML parser we'll use to navigate the text from here on out:
     my $p = HTML::TokeParser->new($data);
+    # Warn the parser that it's reading encoded UTF-8 bytes, not decoded
+    # unicode characters (since that's what DW uses throughout the system):
+    $p->utf8_mode(1);
 
     # Set up state variables:
     my @canonical_urls;    # extracted links
