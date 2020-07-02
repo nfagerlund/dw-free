@@ -1,3 +1,6 @@
+var $rtefirsttime = 0;
+var $origPost = false;
+
 var postForm = (function($) {
     function hasRemote() {
         return $("#js-remote").val() === "" ? false : true;
@@ -25,7 +28,20 @@ var postForm = (function($) {
                 $settings.load(Site.siteroot + "/__rpc_entryoptions", function(html,status,jqxhr) {
                     $(this).slideDown();
                     $link.removeClass( "spinner" );
+                    $("#js-disable-rte").click(function() {
+                        var ed = CKEDITOR.instances['id-event-1']
+                        if ( ed && $(this).is(":checked") ) {
+                            ed.destroy();
+                            postFormInitData.disableRTE = true;
+                        }
+                        if ( !ed && !$(this).is(":checked") && postFormInitData ) {
+                            var entryForm = $("#js-post-entry");
+                            postFormInitData.disableRTE = false;
+                            initRTE(entryForm, postFormInitData.rteMode, postFormInitData.usedRTE, postFormInitData.disableRTE);
+                        }
+                    });
                 })
+
             }
         });
 
@@ -653,6 +669,86 @@ var postForm = (function($) {
 
     };
 
+    var initRTE = function($form, $rteMode, $usedRTE, $disableRTE) {
+        $origPost = $("#id-event-1").val();
+
+        var useRTE = hasRemote() && (
+            ( $origPost.length > 0 ? $usedRTE : 
+              ( $rteMode === "rich" ? true : false ) 
+            )
+        );
+
+        if ( !CKEDITOR.env.isCompatible || $disableRTE ) {
+            $("#switched_rte_on").val(0);
+            return;
+        }
+
+        CKEDITOR.replace( 'event', {
+            disableNativeSpellChecker: false,
+            allowedContent: true,
+            extraPlugins: 'dwformat,dwcut,dwuser,dwembed',
+            title: "Rich Text Editor",
+            toolbar: [
+                { name: 'fontstuff', items: [ 'Font', 'FontSize' ] },
+                { name: 'clipboard', items: [ 'PasteText', 'PasteFromWord'] },
+                { name: 'insert', items: [ 'Link', 'Unlink', 'Blockquote', 'Anchor', 'EmojiPanel', 'HorizontalRule', 'Image', 'Table', 'CodeSnippet' ] },
+                { name: 'dreamwidth', items: [ 'DWUser', 'DWCut', 'DWEmbed' ] },
+                { name: 'document', items: [ 'Source', '-', 'A11ychecker' ] },
+                '/',
+                { name: 'text', items: [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'TextColor', 'BGColor', '-', 'RemoveFormat' ] },
+                { name: 'paragraph', items: [ 'BulletedList', 'NumberedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl' ] },
+                { name: 'tools', items: [ 'Maximize' ] }
+            ]
+        } );
+        CKEDITOR.config.protectedSource.push( /\n/g );
+        var ed = CKEDITOR.instances['id-event-1'];
+
+        // Set up first-time window options
+        if ( ! useRTE ) {
+            $rtefirsttime = 1;
+            ed.on( 'instanceReady', function( evt) {
+                evt.editor.dataProcessor.writer = new CKEDITOR.htmlWriter();
+                $rtefirsttime = 1;
+                // Use line breaks for block elements, tables, and lists.
+                var dtd = CKEDITOR.dtd;
+                for ( var e in CKEDITOR.tools.extend( {}, dtd.$nonBodyContent, dtd.$block, dtd.$listItem, dtd.$tableContent ) ) {
+                    this.dataProcessor.writer.setRules( e, {
+                        indent: true,
+                        breakBeforeOpen: true,
+                        breakAfterOpen: true,
+                        breakBeforeClose: true,
+                        breakAfterClose: false
+                    });
+                }
+                ed.execCommand( 'source' );
+                // Re-set textarea content if editor is supposed to "start up" in source mode
+                if ( $origPost ) {
+                    ed.setData( $origPost );
+                }
+            } );
+        } else {
+            $("#preformatted").prop("checked", true);
+            $("#preformatted").attr("disabled", true);
+        }
+
+        ed.on( 'mode', function( event ) {
+            if ( ed.mode === "source" ) {
+                // Going from wysiwyg to source mode
+                $("#preformatted").removeAttr("disabled");
+                $("#preformatted").removeAttr("hidden");
+                $("label[for='preformatted']").removeAttr("hidden");
+                $("#switched_rte_on").val(0);
+            } else {
+                // Going from source to wysiwyg mode
+                $("#switched_rte_on").val(1);
+                $("#preformatted").prop("checked", true);
+                $("#preformatted").attr("disabled", true);
+                $("#preformatted").attr("hidden", true);
+                $("label[for='preformatted']").attr("hidden", true);
+            }
+        } );
+    };
+
     var init = function(formData) {
         $("#nojs").val(0);
 
@@ -661,6 +757,7 @@ var postForm = (function($) {
 
         initMainForm(entryForm);
         initToolbar(entryForm, formData.minAnimation);
+        initRTE(entryForm, formData.rteMode, formData.usedRTE, formData.disableRTE);
         initButtons(entryForm, $( ".crosspost-component" ), formData.strings);
         initCommunitySection(entryForm);
 
