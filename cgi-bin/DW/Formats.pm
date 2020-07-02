@@ -66,7 +66,7 @@ our %formats = (
     },
     rich1 => {
         id   => 'rich1',
-        name => "Rich text",
+        name => "Rich text (BETA)",
         description =>
 "A WYSIWYG rich text editor that resembles a desktop word processor.",
     },
