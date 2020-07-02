@@ -318,7 +318,7 @@ TOKEN:
         {
             my $tag       = $update_tag->( $token->[1] );
             my $attr      = $token->[2];                                     # hashref
-            my $ljcut_div = $tag eq "div" && lc $attr->{class} eq "ljcut";
+            my $ljcut_div = $tag eq "div" && lc( $attr->{class} || '' ) eq "ljcut";
 
             $good_until = length $newdata;
 
@@ -404,13 +404,13 @@ TOKEN:
             if (   $tag eq "param"
                 && $rewrite_embed_param
                 && $opencount{object}
-                && lc( $attr->{name} ) eq 'allowscriptaccess' )
+                && lc( $attr->{name} || '' ) eq 'allowscriptaccess' )
             {
                 $attr->{value} = "sameDomain" if $attr->{value} ne 'never';
             }
 
             if (   $tag eq "span"
-                && lc $attr->{class} eq "ljuser"
+                && lc( $attr->{class} || '' ) eq "ljuser"
                 && !$noexpand_embedded
                 && !$nodwtags )
             {
@@ -423,7 +423,7 @@ TOKEN:
             }
 
             # deprecated - will always print an error msg (see #1869)
-            if ( ( $tag eq "div" || $tag eq "span" ) && lc $attr->{class} eq "ljvideo" ) {
+            if ( ( $tag eq "div" || $tag eq "span" ) && lc( $attr->{class} || '' ) eq "ljvideo" ) {
                 $start_capture->(
                     $tag, $token,
                     sub {
