@@ -1,0 +1,20 @@
+{
+  "devDependencies": {
+    "broccoli": "^3.4.2",
+    "broccoli-clean-css": "^2.0.1",
+    "broccoli-cli": "^1.0.0",
+    "broccoli-funnel": "^3.0.3",
+    "broccoli-merge-trees": "^4.2.0",
+    "broccoli-multifilter": "^2.0.0",
+    "broccoli-source": "^3.0.0",
+    "broccoli-uglify-sourcemap": "^3.2.0",
+    "fibers": "^5.0.0",
+    "mkdirp": "^1.0.4",
+    "rsvp": "^4.8.5",
+    "sass": "^1.26.10",
+    "walk-sync": "^2.2.0"
+  },
+  "scripts": {
+    "build": "broccoli build ../build/static"
+  }
+}
