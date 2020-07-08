@@ -69,6 +69,7 @@ our %formats = (
         name => "Rich text (BETA)",
         description =>
 "A WYSIWYG rich text editor that resembles a desktop word processor.",
+        js_only => 1,
     },
 );
 
@@ -108,7 +109,7 @@ sub select_items {
     return {
         selected => $selected,
         items =>
-            [ map { { value => $formats{$_}->{id}, text => $formats{$_}->{name}, disabled => $formats{$_}->{id} =~ /^rich/ } } @formats ],
+            [ map { { value => $formats{$_}->{id}, text => $formats{$_}->{name}, disabled => ($formats{$_}->{js_only} || 0) } } @formats ],
     };
 }
 
