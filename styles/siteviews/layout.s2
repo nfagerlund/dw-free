@@ -379,9 +379,23 @@ function EntryPage::print_comments (Comment[] cs) {
 
         $real_prev_depth = $c.depth;
         push $focus_links, """<div class="js-comment-thread-focus" data-target="comment-thread-$c.dom_id">"""
-            + ( defined $c.userpic ? $c.userpic->as_string() : "" )
+
+            + "<div class='js-comment-thread-focus-activate'>"
+            + ( defined $c.userpic ? "<div class='js-comment-thread-focus-userpic'>" + $c.userpic->as_string() + "</div>" : "" )
+            + "<div class='js-comment-thread-focus-poster'>Replying to "
             + ( defined $c.poster ? $c.poster->as_string() : "<span class=\"anonymous\">$*text_poster_anonymous</span>" )
-            + "Click to focus this thread"
+            + "</div>"
+            + """<a class="js-comment-thread-focus-enable-trigger" href="#comment-thread-$c.dom_id" role="button">Focus this thread</a>"""
+            + "</div>"
+
+            + "<div class='js-comment-thread-focus-deactivate'>"
+            + "<div class='js-comment-thread-focus-deactivate-message'>"
+            + "<span class='js-comment-thread-focus-hidden-count'>N</span>"
+            + " comments hidden in other threads."
+            + "</div>"
+            + """<a class="js-comment-thread-focus-disable-trigger" href="#" role="button">Reveal all</a>"""
+            + "</div>"
+
             + "</div>";
     }
 }
