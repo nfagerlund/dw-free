@@ -339,15 +339,31 @@ function EntryPage::print_comments (Comment[] cs) {
     if (size $cs == 0) { return; }
 
     # Iterate over the comment tree structure
+    var int real_prev_depth = -1;
+    var int depth_change = 0;
+    var string[] focus_links = ["(replying to entry)"];
     var Comment c;
     var Comment[] cs_stack = reverse $cs;
     while (size $cs_stack) {
         $c = pop $cs_stack;
         push $cs_stack, reverse $c.replies;
 
+        $depth_change = $depth_change + ($c.depth - $real_prev_depth);
+        if ($real_prev_depth >= 0) {
+            for (var int i = $real_prev_depth; $i >= $c.depth; $i--) {
+                pop $focus_links;
+            }
+        }
+        $real_prev_depth = $c.depth;
+
         var string parity = $c.depth % 2 ? "odd" : "even";
         var int indent = ($c.depth - 1) * 25;
-        "<div class='comment-thread comment-depth-$parity comment-depth-$c.depth'>\n";
+        "<div id='comment-thread-$c.dom_id' class='comment-thread comment-depth-$parity comment-depth-$c.depth'>\n";
+
+        if ($depth_change <= 0) {
+            focus_links[-1];
+        }
+
         "<div id='$c.dom_id' class='dwexpcomment' style='margin-left: ${indent}px; margin-top: 5px;";
         if ($c.hidden_child) {
             " display: none;";
@@ -359,6 +375,12 @@ function EntryPage::print_comments (Comment[] cs) {
             $this->print_comment_partial($c);
         }
         "</div></div>";
+
+        push $focus_links, """<div class="js-comment-thread-focus" data-target="comment-thread-$c.dom_id">"""
+            + $c.userpic->as_string()
+            + defined $c.poster ? $c.poster->as_string() : "<span class=\"anonymous\">$*text_poster_anonymous</span>"
+            + "Click to focus this thread"
+            + "</div>";
     }
 }
 
