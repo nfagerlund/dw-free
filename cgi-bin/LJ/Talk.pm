@@ -1850,6 +1850,7 @@ sub init_s2journal_js {
             js/jquery/jquery.ui.widget.js
             js/jquery.quickreply.js
             js/jquery.threadexpander.js
+            js/jquery.inchworm-threads.js
             )
     ) unless $opts{noqr};
 
