@@ -6332,24 +6332,12 @@ function EntryPage::print_comments (Comment[] cs) {
     # Iterate over the comment tree structure
     var int prev_depth = -1;
     var int first_depth = -1;
-    var int real_prev_depth = -1; # prev_depth is only for nesting :c
-    var int depth_change = 0;
-    var string focus_target_type = ""; # .dwexpcomment, not thread
-    var string[] focus_links = ["(replying to entry)"];
     var Comment c;
     var Comment[] cs_stack = reverse $cs;
     while (size $cs_stack) {
         $c = pop $cs_stack;
 
         push $cs_stack, reverse $c.replies;
-
-        $depth_change = $depth_change + ($c.depth - $real_prev_depth);
-        if ($real_prev_depth >= 0) {
-            for (var int i = $real_prev_depth; $i >= $c.depth; $i--) {
-                pop $focus_links;
-            }
-        }
-        $real_prev_depth = $c.depth;
 
         # close some divs when not increasing depth
         if ($c.depth < $MAX_NESTED_DEPTH and $prev_depth >= 0) {
@@ -6360,9 +6348,6 @@ function EntryPage::print_comments (Comment[] cs) {
 
         if ($c.depth < $MAX_NESTED_DEPTH) {
             $prev_depth = $c.depth;
-            $focus_target_type = "";
-        } else {
-            $focus_target_type = "comment-thread-";
         }
 
         if ($first_depth < 0) {
@@ -6372,16 +6357,11 @@ function EntryPage::print_comments (Comment[] cs) {
         # actually print the comment
         var string parity = $c.depth % 2 ? "odd" : "even";
         var int mod5 = $c.depth % 5;
-        "<div id='comment-thread-$c.dom_id' data-comment-depth='$c.depth' style='--comment-depth: $c.depth; --comment-indent-limit-mobile: ${*comment_indent_limit_mobile}' class='comment-thread";
+        "<div data-comment-depth='$c.depth' style='--comment-depth: $c.depth; --comment-indent-limit-mobile: ${*comment_indent_limit_mobile}' class='comment-thread";
         foreach var string zone ($c->depth_zones()) {
             " comment-depth-indent-$zone";
         }
         " comment-depth-$parity comment-depth-mod5-$mod5 comment-depth-$c.depth'>\n";
-
-        if ($depth_change <= 0) {
-            focus_links[-1];
-        }
-
         "<div id='$c.dom_id' class='dwexpcomment' style='";
         if ($*comment_indent_style == "static") {
             var int indent = ($c.depth - 1) * 25;
@@ -6397,12 +6377,6 @@ function EntryPage::print_comments (Comment[] cs) {
             $this->print_comment_partial($c);
         }
         "</div>";
-
-        push $focus_links, """<div class="js-comment-thread-focus" data-target="$focus_target_type$c.dom_id">"""
-            + $c.userpic->as_string()
-            + defined $c.poster ? $c.poster->as_string() : "<span class=\"anonymous\">$*text_poster_anonymous</span>"
-            + "Click to focus this thread"
-            + "</div>";
 
         if ($c.depth >= $MAX_NESTED_DEPTH) {
             print "</div>";
