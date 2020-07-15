@@ -360,6 +360,8 @@ function EntryPage::print_comments (Comment[] cs) {
         var int indent = ($c.depth - 1) * 25;
         "<div id='comment-thread-$c.dom_id' class='comment-thread comment-depth-$parity comment-depth-$c.depth'>\n";
 
+        print "Depth change: ${depth_change}. Prev depth: ${real_prev_depth}. Current depth: ${c.depth}.";
+
         if ($depth_change <= 0) {
             print $focus_links[-1];
         }
