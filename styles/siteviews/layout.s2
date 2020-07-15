@@ -354,7 +354,6 @@ function EntryPage::print_comments (Comment[] cs) {
                 pop $focus_links;
             }
         }
-        $real_prev_depth = $c.depth;
 
         var string parity = $c.depth % 2 ? "odd" : "even";
         var int indent = ($c.depth - 1) * 25;
@@ -378,6 +377,7 @@ function EntryPage::print_comments (Comment[] cs) {
         }
         "</div></div>";
 
+        $real_prev_depth = $c.depth;
         push $focus_links, """<div class="js-comment-thread-focus" data-target="comment-thread-$c.dom_id">"""
             + ( defined $c.userpic ? $c.userpic->as_string() : "" )
             + ( defined $c.poster ? $c.poster->as_string() : "<span class=\"anonymous\">$*text_poster_anonymous</span>" )
