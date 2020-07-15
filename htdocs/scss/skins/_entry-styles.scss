@@ -325,3 +325,39 @@ ul.entry-management-links {
     display: none;
   }
 }
+
+// Temp styles for inchworm chiclets
+
+.js-comment-thread-focus {
+  border: 1px solid;
+  border-radius: 5px;
+  padding: .5em;
+  width: 25em;
+}
+
+.js-comment-thread-focus-activate {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas: "icon poster" "icon trigger";
+}
+
+.js-comment-thread-focus-userpic {
+  grid-area: icon;
+  margin-right: .5em;
+}
+
+.js-comment-thread-focus-poster {
+  grid-area: poster;
+}
+
+.js-comment-thread-focus-enable-trigger {
+  grid-area: trigger;
+}
+
+.js-comment-thread-focus-userpic img {
+  max-width: 50px;
+  max-height: 50px;
+  width: auto;
+  height: auto;
+}
+

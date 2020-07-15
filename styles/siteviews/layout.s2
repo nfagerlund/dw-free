@@ -359,10 +359,10 @@ function EntryPage::print_comments (Comment[] cs) {
         var int indent = ($c.depth - 1) * 25;
         "<div id='comment-thread-$c.dom_id' class='comment-thread comment-depth-$parity comment-depth-$c.depth'>\n";
 
-        print "Depth change: ${depth_change}. Prev depth: ${real_prev_depth}. Current depth: ${c.depth}.";
-
         if ($depth_change <= 0) {
+            "<div style='margin-left: ${indent}px;'>";
             print $focus_links[-1];
+            "</div>";
         }
 
         "<div id='$c.dom_id' class='dwexpcomment' style='margin-left: ${indent}px; margin-top: 5px;";
@@ -388,7 +388,7 @@ function EntryPage::print_comments (Comment[] cs) {
             + """<a class="js-comment-thread-focus-enable-trigger" href="#comment-thread-$c.dom_id" role="button">Focus this thread</a>"""
             + "</div>"
 
-            + "<div class='js-comment-thread-focus-deactivate'>"
+            + "<div class='js-comment-thread-focus-deactivate' style='display: none;'>"
             + "<div class='js-comment-thread-focus-deactivate-message'>"
             + "<span class='js-comment-thread-focus-hidden-count'>N</span>"
             + " comments hidden in other threads."
