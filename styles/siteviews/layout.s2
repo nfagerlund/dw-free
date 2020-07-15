@@ -379,12 +379,7 @@ function EntryPage::print_comments (Comment[] cs) {
 
         $real_prev_depth = $c.depth;
         push $focus_links, """<div class="js-comment-thread-focus" data-target="comment-thread-$c.dom_id">"""
-            + ( defined $c.userpic
-                ? $c.userpic->as_string()
-                : ( (defined $c.poster and defined $c.poster.default_pic)
-                    ? $c.poster.default_pic->as_string()
-                    : "")
-                )
+            + ( defined $c.userpic ? $c.userpic->as_string() : "" )
             + ( defined $c.poster ? $c.poster->as_string() : "<span class=\"anonymous\">$*text_poster_anonymous</span>" )
             + "Click to focus this thread"
             + "</div>";
