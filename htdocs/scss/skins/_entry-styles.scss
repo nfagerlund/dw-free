@@ -361,3 +361,8 @@ ul.entry-management-links {
   height: auto;
 }
 
+@media #{$small-only} {
+  .comment-thread > div[style] {
+    margin-left: 0 !important;
+  }
+}
