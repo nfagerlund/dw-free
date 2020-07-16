@@ -359,17 +359,18 @@ function EntryPage::print_comments (Comment[] cs) {
         var int indent = ($c.depth - 1) * 25;
         "<div id='comment-thread-$c.dom_id' class='comment-thread comment-depth-$parity comment-depth-$c.depth'>\n";
 
-        if ($depth_change <= 0) {
-            "<div style='margin-left: ${indent}px;'>";
-            print $focus_links[-1];
-            "</div>";
-        }
-
         "<div id='$c.dom_id' class='dwexpcomment' style='margin-left: ${indent}px; margin-top: 5px;";
         if ($c.hidden_child) {
             " display: none;";
         }
         "'>\n";
+
+        if ($depth_change <= 0) {
+            $focus_links[-1];
+        } elseif $c.depth > 1 {
+            "<div class='threadfocus threadfocus-continuous'></div>";
+        }
+
         if ($c.full) {
             $this->print_comment($c);
         } else {
@@ -378,22 +379,15 @@ function EntryPage::print_comments (Comment[] cs) {
         "</div></div>";
 
         $real_prev_depth = $c.depth;
-        push $focus_links, """<div class="js-comment-thread-focus" data-target="comment-thread-$c.dom_id">"""
+        push $focus_links,
+            """<div class="threadfocus threadfocus-disjoint" data-target="comment-thread-$c.dom_id">"""
 
-            + "<div class='js-comment-thread-focus-activate'>"
-            + ( defined $c.userpic ? "<div class='js-comment-thread-focus-userpic'>" + $c.userpic->as_string() + "</div>" : "" )
-            + "<div class='js-comment-thread-focus-poster'>Replying to "
-            + ( defined $c.poster ? $c.poster->as_string() : "<span class=\"anonymous\">$*text_poster_anonymous</span>" )
-            + "</div>"
-            + """<a class="js-comment-thread-focus-enable-trigger" href="#comment-thread-$c.dom_id" role="button">Focus this thread</a>"""
+            + "<div class='threadfocus-siblings-visible'>"
+                + """<a class="threadfocus-hide-trigger" href="#comment-thread-$c.dom_id" role="button">Focus this thread</a>"""
             + "</div>"
 
-            + "<div class='js-comment-thread-focus-deactivate' style='display: none;'>"
-            + "<div class='js-comment-thread-focus-deactivate-message'>"
-            + "<span class='js-comment-thread-focus-hidden-count'>N</span>"
-            + " comments hidden in other threads."
-            + "</div>"
-            + """<a class="js-comment-thread-focus-disable-trigger" href="#" role="button">Reveal all</a>"""
+            + "<div class='threadfocus-siblings-hidden' style='display: none;'>"
+                + """<a class="threadfocus-show-trigger" href="#" role="button">Show hidden threads</a>"""
             + "</div>"
 
             + "</div>";
