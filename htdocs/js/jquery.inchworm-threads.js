@@ -7,11 +7,11 @@ jQuery(function($){
         var focusTarget = $('#' + focusControl.data('target'));
         var thread = focusControl.closest('.comment-thread');
         var toHide = thread.prevUntil(focusTarget);
-        toHide.hide();
-        focusControl.find('.threadfocus-siblings-hidden').show();
-        $(e.target).closest('.threadfocus-siblings-visible').hide({
+        toHide.hide({
             done: function() {
                 thread[0].scrollIntoView({block: 'center', inline: 'nearest', behavior: 'smooth'});
+                focusControl.find('.threadfocus-siblings-hidden').show();
+                $(e.target).closest('.threadfocus-siblings-visible').hide();
             }
         });
     });
@@ -23,11 +23,11 @@ jQuery(function($){
         var focusTarget = $('#' + focusControl.data('target'));
         var thread = focusControl.closest('.comment-thread');
         var toShow = thread.prevUntil(focusTarget);
-        toShow.show();
-        focusControl.find('.threadfocus-siblings-visible').show();
-        $(e.target).closest('.threadfocus-siblings-hidden').hide({
+        toShow.show({
             done: function() {
                 thread[0].scrollIntoView({block: 'center', inline: 'nearest', behavior: 'smooth'});
+                focusControl.find('.threadfocus-siblings-visible').show();
+                $(e.target).closest('.threadfocus-siblings-hidden').hide();
             }
         });
     });
