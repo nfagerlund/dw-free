@@ -359,17 +359,19 @@ function EntryPage::print_comments (Comment[] cs) {
         var int indent = ($c.depth - 1) * 25;
         "<div id='comment-thread-$c.dom_id' class='comment-thread comment-depth-$parity comment-depth-$c.depth'>\n";
 
-        "<div id='$c.dom_id' class='dwexpcomment' style='margin-left: ${indent}px; margin-top: 5px;";
-        if ($c.hidden_child) {
-            " display: none;";
-        }
-        "'>\n";
-
+        "<div class='threadfocus-wrapper' style='margin-left: ${indent}px;'>";
         if ($depth_change <= 0) {
             print $focus_links[-1];
         } elseif ($c.depth > 1) {
             "<div class='threadfocus threadfocus-continuous'></div>";
         }
+        "</div>";
+
+        "<div id='$c.dom_id' class='dwexpcomment' style='margin-left: ${indent}px; margin-top: 5px;";
+        if ($c.hidden_child) {
+            " display: none;";
+        }
+        "'>\n";
 
         if ($c.full) {
             $this->print_comment($c);
