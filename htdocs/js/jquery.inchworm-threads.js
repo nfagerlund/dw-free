@@ -10,11 +10,11 @@ jQuery(function($){
         toHide.hide({
             duration: 0,
         }).promise().done(function() {
+            focusControl.find('.threadfocus-siblings-hidden').show();
+            $(e.target).closest('.threadfocus-siblings-visible').hide();
             var scrollDest = thread.offset().top - 150;
             window.scrollTo({top: scrollDest, behavior: 'smooth'});
             // thread[0].scrollIntoView({block: 'center', inline: 'nearest', behavior: 'smooth'});
-            focusControl.find('.threadfocus-siblings-hidden').show();
-            $(e.target).closest('.threadfocus-siblings-visible').hide();
         });
     });
 
@@ -28,11 +28,11 @@ jQuery(function($){
         toShow.show({
             duration: 0,
         }).promise().done(function() {
-            var scrollDest = thread.offset().top - 150;
-            window.scrollTo({top: scrollDest, behavior: 'smooth'});
             // thread[0].scrollIntoView({block: 'center', inline: 'nearest', behavior: 'smooth'});
             focusControl.find('.threadfocus-siblings-visible').show();
             $(e.target).closest('.threadfocus-siblings-hidden').hide();
+            var scrollDest = thread.offset().top - 150;
+            window.scrollTo({top: scrollDest, behavior: 'smooth'});
         });
     });
 });
