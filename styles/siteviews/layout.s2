@@ -367,7 +367,7 @@ function EntryPage::print_comments (Comment[] cs) {
 
         if ($depth_change <= 0) {
             $focus_links[-1];
-        } elseif $c.depth > 1 {
+        } elseif ($c.depth > 1) {
             "<div class='threadfocus threadfocus-continuous'></div>";
         }
 
