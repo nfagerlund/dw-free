@@ -11,7 +11,7 @@ jQuery(function($){
             duration: 0,
         }).promise().done(function() {
             var scrollDest = thread.offset().top - 150;
-            window.scrollTo({top: scrollDest});
+            window.scrollTo(window.scrollX, scrollDest);
             focusControl.find('.threadfocus-siblings-hidden').show();
             $(e.target).closest('.threadfocus-siblings-visible').hide();
         });
@@ -28,7 +28,7 @@ jQuery(function($){
             duration: 0,
         }).promise().done(function() {
             var scrollDest = thread.offset().top - 150;
-            window.scrollTo({top: scrollDest});
+            window.scrollTo(window.scrollX, scrollDest);
             focusControl.find('.threadfocus-siblings-visible').show();
             $(e.target).closest('.threadfocus-siblings-hidden').hide();
         });
