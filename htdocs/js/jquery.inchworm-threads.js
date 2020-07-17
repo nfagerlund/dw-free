@@ -10,13 +10,10 @@ jQuery(function($){
         toHide.hide({
             duration: 0,
         }).promise().done(function() {
+            var scrollDest = thread.offset().top - 150;
+            window.scrollTo({top: scrollDest});
             focusControl.find('.threadfocus-siblings-hidden').show();
             $(e.target).closest('.threadfocus-siblings-visible').hide();
-            // var scrollDest = thread.offset().top - 150;
-            // ok skip the jquery offset. get it raw.
-            var scrollDest = thread[0].getBoundingClientRect().top + window.scrollY - 150;
-            window.scrollTo({top: scrollDest, behavior: 'smooth'});
-            // thread[0].scrollIntoView({block: 'center', inline: 'nearest', behavior: 'smooth'});
         });
     });
 
@@ -30,12 +27,10 @@ jQuery(function($){
         toShow.show({
             duration: 0,
         }).promise().done(function() {
-            // thread[0].scrollIntoView({block: 'center', inline: 'nearest', behavior: 'smooth'});
+            var scrollDest = thread.offset().top - 150;
+            window.scrollTo({top: scrollDest});
             focusControl.find('.threadfocus-siblings-visible').show();
             $(e.target).closest('.threadfocus-siblings-hidden').hide();
-            // var scrollDest = thread.offset().top - 150;
-            var scrollDest = thread[0].getBoundingClientRect().top + window.scrollY - 150;
-            window.scrollTo({top: scrollDest, behavior: 'smooth'});
         });
     });
 });
