@@ -336,3 +336,18 @@ ul.entry-management-links {
   width: 50%;
   margin-left: 15%;
 }
+
+.threadfocus.threadfocus-continuous {
+	border-image: linear-gradient(to right, #aaa0, #aaa 50%, #aaa0 100%) 1;
+	border-radius: unset;
+	border-top-width: 1px;
+	border-right-width: 0;
+	border-left-width: 0;
+	border-bottom-width: 0;
+	background-image: linear-gradient(to right, #aaa0, #aaa0 50%, #aaaf 50%, #aaaf calc(50% + 1px), #aaa0 calc(50% + 1px));
+	width: 10em;
+	margin-left: 75px;
+	height: 10px;
+	min-height: 0;
+}
+
