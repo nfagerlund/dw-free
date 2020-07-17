@@ -9,13 +9,12 @@ jQuery(function($){
         var toHide = thread.prevUntil(focusTarget);
         toHide.hide({
             duration: 0,
-            done: function() {
-                var scrollDest = thread.offset().top - 150;
-                window.scrollTo({top: scrollDest, behavior: 'smooth'});
-                // thread[0].scrollIntoView({block: 'center', inline: 'nearest', behavior: 'smooth'});
-                focusControl.find('.threadfocus-siblings-hidden').show();
-                $(e.target).closest('.threadfocus-siblings-visible').hide();
-            }
+        }).promise().done(function() {
+            var scrollDest = thread.offset().top - 150;
+            window.scrollTo({top: scrollDest, behavior: 'smooth'});
+            // thread[0].scrollIntoView({block: 'center', inline: 'nearest', behavior: 'smooth'});
+            focusControl.find('.threadfocus-siblings-hidden').show();
+            $(e.target).closest('.threadfocus-siblings-visible').hide();
         });
     });
 
@@ -28,13 +27,12 @@ jQuery(function($){
         var toShow = thread.prevUntil(focusTarget);
         toShow.show({
             duration: 0,
-            done: function() {
-                var scrollDest = thread.offset().top - 150;
-                window.scrollTo({top: scrollDest, behavior: 'smooth'});
-                // thread[0].scrollIntoView({block: 'center', inline: 'nearest', behavior: 'smooth'});
-                focusControl.find('.threadfocus-siblings-visible').show();
-                $(e.target).closest('.threadfocus-siblings-hidden').hide();
-            }
+        }).promise().done(function() {
+            var scrollDest = thread.offset().top - 150;
+            window.scrollTo({top: scrollDest, behavior: 'smooth'});
+            // thread[0].scrollIntoView({block: 'center', inline: 'nearest', behavior: 'smooth'});
+            focusControl.find('.threadfocus-siblings-visible').show();
+            $(e.target).closest('.threadfocus-siblings-hidden').hide();
         });
     });
 });
