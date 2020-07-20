@@ -82,6 +82,8 @@ sub add_cookie {
     confess "Must provide value (try delete_cookie if you really mean this)"
         unless exists $args{value};
 
+    $args{samesite} = 'Lax';
+
     # extraneous parenthesis inside map {} needed to force BLOCK mode map
     my $cookie = CGI::Cookie->new( map { ( "-$_" => $args{$_} ) } keys %args );
     $self->err_header_out_add( 'Set-Cookie' => $cookie );
