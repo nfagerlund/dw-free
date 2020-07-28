@@ -59,3 +59,33 @@
     background-color: $highlight-color;
     color: $highlight-text-color;
     }
+
+
+/* Inline #3 | http://www.rr-thrice.hack.dreamwidth.net/customize/ */
+
+.themes-area {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 170px);
+  justify-content: center;
+  grid-row-gap: .5em;
+  grid-column-gap: .5em;
+}
+
+.theme-item {
+  position: relative;
+}
+
+.theme-preview-link {
+  position: absolute;
+  right: 4px;
+  top: 0px;
+}
+
+.themes-area {
+  /* grid-template-columns: repeat(auto-fit, 170px); */
+  grid-template-columns: repeat(auto-fit, 156px);
+}
+
+.theme-item {
+  text-align: center;
+}
