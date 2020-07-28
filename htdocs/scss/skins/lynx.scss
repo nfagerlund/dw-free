@@ -13,7 +13,8 @@
 $highlight-color: unset;
 $highlight-text-color: unset;
 $highlight-border: unset;
-@import "skins/compatibility-styles";
+$text-color: unset;
+$primary-text-color: unset;
 
 // Color variables required by entry-styles:
 $soft-accent-color: unset;
@@ -23,6 +24,7 @@ $secondary-color: #e2e2e2;
 $screened-comment-bg: #C29B9B; // old Tropo screened comment color, why not.
 @import "skins/entry-styles";
 @import "skins/icons-page";
+@import "skins/compatibility-styles";
 
 // Hacks: isolated important bits from files we really don't want to import.
 
