@@ -197,15 +197,6 @@ sub html_select {
     $ret .= " $opts->{'raw'}" if $opts->{'raw'};
     $ret .= " disabled='disabled'" if $opts->{'disabled'};
     $ret .= " multiple='multiple'" if $opts->{'multiple'};
-    # are there additional data-attributes?
-    my %select_data = $opts->{data} ? %{ $opts->{data} } : ();
-    foreach ( keys %select_data ) {
-        my $val = $select_data{$_} // '';
-        if ($ehtml) {
-            $val = ehtml($val);
-        }
-        $ret .= " data-$_='$val'";
-    }
     foreach ( grep { !/^(raw|disabled|selected|noescape|multiple)$/ } keys %$opts ) {
         my $opt = $opts->{$_} || '';
         $ret .= " $_=\"" . ( $ehtml ? ehtml($opt) : $opt ) . "\"";
