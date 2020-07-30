@@ -131,59 +131,9 @@
         font-size: smaller;
     }
 
-    // Keyword menus: the inline one is the modern one, and the legacy one is
-    // for old browsers that can't handle display: grid, because there's no way
-    // to make it work inline without tearing my hair out.
-    #inline-keyword-menu { // when no icon selected, or redundant bc meta text = yes
-        display: none;
-    }
-
-    #legacy-keyword-menu {
-        min-height: 4em;
-
-        @supports (display: grid) {
-            display: none;
-        }
-
-        label.left {
-            float: left;
-            margin-right: .5rem;
-        }
-    }
-
-    #icon-browser-select-button-wrapper {
-        display: none; // when no icon selected
-    }
-
-    #js-icon-browser-select {
-        margin-top: .5rem;
-        margin-bottom: .5rem;
-    }
-
-    .icon-browser-content #icon-browser-select-button-wrapper {
-        display: block;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
     &.no-meta {
         .icon-browser-item-meta {
             display: none;
-        }
-
-        @supports (display: grid) { // no inline menu for old browsers
-            .icon-browser-content #inline-keyword-menu {
-                display: block;
-                grid-column: 1 / -1;
-
-                .keywords {
-                    display: flex;
-                    justify-content: center;
-                    flex-wrap: wrap;
-                    margin-bottom: .5rem;
-                }
-            }
         }
     }
 

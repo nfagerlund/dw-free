@@ -148,11 +148,6 @@ IconBrowser.prototype = {
             .on("click", ".icon-browser-item", this.selectByClick.bind(this))
             .on("dblclick", ".icon-browser-item", this.selectByDoubleClick.bind(this));
 
-        this.modal
-            .find(".keyword-menu")
-                .on("click", ".keyword", this.selectByKeywordMenuClick.bind(this))
-                .on("dblclick", ".keyword", this.selectByKeywordMenuDoubleClick.bind(this));
-
         $("#js-icon-browser-search").on("keyup click", this.filter.bind(this));
         $("#js-icon-browser-select").on("click", this.updateOwner.bind(this));
 
@@ -182,46 +177,24 @@ IconBrowser.prototype = {
         // want predictable behavior when people combine click + tab/enter.
         e.target.focus();
 
-        // If this is the second click, treat it as confirmation:
-        if ( $(e.target).hasClass("active") ) {
-            this.updateOwner.call(this, e);
-        } else {
-            // this may be on either the icon or the keyword
-            var container = $(e.target).closest("li");
-            var keyword = $(e.target).closest("a.keyword");
+        // this may be on either the icon or the keyword
+        var container = $(e.target).closest("li");
+        var keyword = $(e.target).closest("a.keyword");
 
-            this.doSelect(container, keyword.length > 0 ? keyword.text() : null, true);
+        // set the active icon and keyword:
+        this.doSelect(container, keyword.length > 0 ? keyword.text() : null);
 
-            // If they chose a keyword, treat it as confirmation:
-            if (keyword.length > 0) {
-                this.updateOwner.call(this, e);
-            }
-        }
+        // confirm and close:
+        this.updateOwner.call(this, e);
     },
     selectByDoubleClick: function(e) {
         this.selectByClick.call(this, e);
-        this.updateOwner.call(this, e);
-    },
-    selectByKeywordMenuClick: function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-
-        var keyword = $(e.target).text();
-        var id = this.kwToIcon[keyword];
-        if ( id ) {
-            this.doSelect($("#" + id), keyword, false);
-            // If they chose a keyword, treat it as confirmation:
-            this.updateOwner.call(this, e);
-        }
-    },
-    selectByKeywordMenuDoubleClick: function(e) {
-        this.selectByKeywordMenuClick(e);
     },
     initializeKeyword: function() {
         var keyword = this.element.val();
-        this.doSelect($("#" + this.kwToIcon[keyword]), keyword, true);
+        this.doSelect($("#" + this.kwToIcon[keyword]), keyword);
     },
-    doSelect: function($container, keyword, replaceKwMenu) {
+    doSelect: function($container, keyword) {
         var iconBrowser = this;
 
         $("#" + iconBrowser.selectedId).find(".th, a").removeClass("active");
@@ -230,10 +203,6 @@ IconBrowser.prototype = {
             // more like DON'Tselect.
             iconBrowser.selectedKeyword = undefined;
             iconBrowser.selectedId = undefined;
-            // move keyword menu and select button back to their original spots
-            $("#js-icon-browser-content").before(
-                iconBrowser.modal.find("#inline-keyword-menu, #icon-browser-select-button-wrapper")
-            )
             return;
         }
 
@@ -251,29 +220,6 @@ IconBrowser.prototype = {
             .show()
             .find(".th, a[data-kw='" + iconBrowser.selectedKeyword + "']")
                 .addClass("active");
-
-        // update keyword menus, move inline menu and select button
-        if ( replaceKwMenu ) {
-            var $currentKeywords = $container.find(".keywords");
-            var $oldKeywords = iconBrowser.modal.find(".keyword-menu")
-                .find(".keywords");
-            $currentKeywords.clone().replaceAll($oldKeywords);
-            // adopt inline menu as sibling:
-            $container.after( $('#inline-keyword-menu') );
-            // adopt select button as child:
-            $container.append( $('#icon-browser-select-button-wrapper') );
-        } else {
-            iconBrowser.modal.find(".keyword-menu .active")
-                .removeClass("active");
-        }
-
-        // selected element in the keyword menu (can't use cached query because
-        // we may have replaced the keyword-menu element)
-        iconBrowser.modal.find(".keyword-menu .keyword")
-            .filter(function() {
-                return $(this).text() == iconBrowser.selectedKeyword;
-            })
-            .addClass("active");
     },
     updateOwner: function(e) {
         if (this.selectedKeyword) {
@@ -315,10 +261,10 @@ IconBrowser.prototype = {
 
         var $visible = $("#js-icon-browser-content li:visible");
         if ( $visible.length == 1 ) {
-            this.doSelect($visible, null, true);
+            this.doSelect($visible, null);
         } else if ( ! $visible.is('#' + this.selectedId) ) {
             // The previously selected icon doesn't match the filter anymore, so deselect it.
-            this.doSelect(null, null, true);
+            this.doSelect(null, null);
         }
     },
     resetFilter: function() {

@@ -41,19 +41,6 @@ the same terms as Perl itself.  For a copy of the license, please reference
             </div>
         </div>
 
-        <div id="legacy-keyword-menu" class="keyword-menu">
-            <label class="left">Keywords of selected icon:</label>
-            <div class='keywords'></div>
-        </div>
-
-        <div id="inline-keyword-menu" class="keyword-menu">
-            <div class='keywords'></div>
-        </div>
-
-        <div id='icon-browser-select-button-wrapper'>
-            <button id='js-icon-browser-select'>Select</button>
-        </div>
-
         <div id="js-icon-browser-content" class="icon-browser-content">
             <span class="icon-browser-status">Loading...</span>
             <ul class="js-icon-browser-icon-grid"></ul>
