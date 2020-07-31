@@ -324,7 +324,7 @@ function Options(modal, prefs) {
         modal: modal
     });
     $("#js-icon-browser-order-toggle a")
-        .click(this.toggleMetaText.bind(this))
+        .click(this.toggleKeywordOrder.bind(this))
         .filter(prefs.keywordorder ? "[data-action='keyword']" : "[data-action='date']")
             .triggerHandler("click", true);
 
