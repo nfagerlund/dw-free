@@ -68,6 +68,7 @@ IconBrowser.prototype = {
     selectedId: undefined,
     selectedKeyword: undefined,
     iconBrowserItems: [],
+    iconsList: undefined,
     isLoaded: false,
     listenersRegistered: false,
     loadIcons: function() {
@@ -97,6 +98,8 @@ IconBrowser.prototype = {
                 $status.remove();
 
                 var $iconslist = $content.find("ul");
+                // Save it, we'll need it for sorting later.
+                iconBrowser.iconsList = $iconslist;
                 $iconslist.empty();
 
                 var pics = data.pics;
@@ -136,6 +139,7 @@ IconBrowser.prototype = {
                         .data( "comment", icon.comment.toLocaleUpperCase() )
                         .data( "alt", icon.alt.toLocaleUpperCase() )
                         .data( "defaultkw", icon.keywords[0] )
+                        .data( "dateorder", index )
                         .attr( "id", idstring );
                     // Save a reference for easy sorting later
                     iconBrowser.iconBrowserItems.push($listItem);
@@ -165,6 +169,9 @@ IconBrowser.prototype = {
 
         $("#js-icon-browser-search").on("keyup click", this.filter.bind(this));
         $("#js-icon-browser-select").on("click", this.updateOwner.bind(this));
+
+        this.modal.on("sortByKeyword.iconbrowser", this.sortByKeyword.bind(this));
+        this.modal.on("sortByDate.iconbrowser", this.sortByDate.bind(this));
 
         $(document)
             .on('closed.fndtn.reveal', '#' + this.modalId, this.deregisterListeners.bind(this));
@@ -248,6 +255,30 @@ IconBrowser.prototype = {
     close: function() {
         this.modal.foundation('reveal', 'close');
     },
+    sortByKeyword: function() {
+        this.iconBrowserItems.sort(function(a, b) {
+            if ( a.data('defaultkw') < b.data('defaultkw') ) {
+                return -1;
+            }
+            if ( a.data('defaultkw') > b.data('defaultkw') ) {
+                return 1;
+            }
+            return 0;
+        });
+        this.iconsList.append(this.iconBrowserItems); // updates in-place.
+    },
+    sortByDate: function() {
+        this.iconBrowserItems.sort(function(a, b) {
+            if ( a.data('dateorder') < b.data('dateorder') ) {
+                return -1;
+            }
+            if ( a.data('dateorder') > b.data('dateorder') ) {
+                return 1;
+            }
+            return 0;
+        });
+        this.iconsList.append(this.iconBrowserItems); // updates in-place.
+    },
     filter: function(e) {
         if (this.selectedKeyword) {
             if ( e.key === 'Enter' || (! e.key && e.keyCode === 13) ) {
@@ -321,9 +352,11 @@ Options.prototype = {
         var $link = $(e.target);
         if ( $link.data("action") === "keyword" ) {
             this.modal.addClass("keyword-order");
+            this.modal.trigger("sortByKeyword.iconbrowser");
             if ( !init ) this.save( "keywordorder", true );
         } else {
             this.modal.removeClass("keyword-order");
+            this.modal.trigger("sortByDate.iconbrowser");
             if ( !init ) this.save( "keywordorder", false );
         }
 
