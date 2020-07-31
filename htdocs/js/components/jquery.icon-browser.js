@@ -263,10 +263,12 @@ IconBrowser.prototype = {
     },
     sortByKeyword: function() {
         this.iconBrowserItems.sort(function(a, b) {
-            if ( a.data('defaultkw') < b.data('defaultkw') ) {
+            var aKW = a.data('defaultkw').toLowerCase();
+            var bKW = b.data('defaultkw').toLowerCase();
+            if ( aKW < bKW ) {
                 return -1;
             }
-            if ( a.data('defaultkw') > b.data('defaultkw') ) {
+            if ( aKW > bKW ) {
                 return 1;
             }
             return 0;
@@ -275,10 +277,12 @@ IconBrowser.prototype = {
     },
     sortByDate: function() {
         this.iconBrowserItems.sort(function(a, b) {
-            if ( a.data('dateorder') < b.data('dateorder') ) {
+            var aDate = a.data('dateorder');
+            var bDate = b.data('dateorder');
+            if ( aDate < bDate ) {
                 return -1;
             }
-            if ( a.data('dateorder') > b.data('dateorder') ) {
+            if ( aDate > bDate ) {
                 return 1;
             }
             return 0;
