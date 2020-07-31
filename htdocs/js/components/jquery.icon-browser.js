@@ -138,10 +138,11 @@ IconBrowser.prototype = {
                         .data( "defaultkw", icon.keywords[0] )
                         .attr( "id", idstring );
                     // Save a reference for easy sorting later
-                    iconBrowser.iconBrowserItems.push($listItem[0]);
+                    iconBrowser.iconBrowserItems.push($listItem);
                 });
 
-                $iconslist.append(IconBrowser.iconBrowserItems);
+                // Do the DOM manipulation in one pass.
+                $iconslist.append(iconBrowser.iconBrowserItems);
 
                 searchField.prop("disabled", false);
 
