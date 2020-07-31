@@ -118,10 +118,14 @@
         &.active, &.inactive-toggle {
             // Journal styles don't know about ".active" controls so they don't
             // do the inverted colors thing you see in site skins. But border
-            // thickness will do in a pinch.
+            // thickness plus an icon will do in a pinch.
             border-width: 3px;
             margin: calc(.2em - 2px); // absorb extra border size
             margin-left: 0;
+
+            &::before {
+                content: "✔ ";
+            }
         }
     }
 
