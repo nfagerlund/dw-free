@@ -25,6 +25,11 @@ the same terms as Perl itself.  For a copy of the license, please reference
         <div class="row">
             <div class="columns top-controls">
                 <div class="display-toggles">
+                    <div class='icon-browser-options icon-browser-order-toggle' id='js-icon-browser-order-toggle'>
+                        <a href="#" role="button" data-action="date">By date</a> /
+                        <a href="#" role="button" data-action="keyword">By keyword</a>
+                    </div>
+
                     <div class='icon-browser-options icon-browser-meta-toggle' id='js-icon-browser-meta-toggle'>
                         <a href="#" role="button" data-action="text">Text</a> /
                         <a href="#" role="button" data-action="no-text">No text</a>

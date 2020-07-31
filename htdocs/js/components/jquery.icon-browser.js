@@ -67,6 +67,7 @@ IconBrowser.prototype = {
     kwToIcon: {},
     selectedId: undefined,
     selectedKeyword: undefined,
+    iconBrowserItems: [],
     isLoaded: false,
     listenersRegistered: false,
     loadIcons: function() {
@@ -130,13 +131,17 @@ IconBrowser.prototype = {
 
                     var $meta = $("<div class='icon-browser-item-meta'></div>").append($keywords).append($comment);
                     var $item = $("<div class='icon-browser-item'></div>").append($img).append($meta);
-                    $("<li></li>").append($item).appendTo($iconslist)
+                    var $listItem = $("<li></li>").append($item)
                         .data( "keywords", icon.keywords.join(" ").toLocaleUpperCase() )
                         .data( "comment", icon.comment.toLocaleUpperCase() )
                         .data( "alt", icon.alt.toLocaleUpperCase() )
                         .data( "defaultkw", icon.keywords[0] )
                         .attr( "id", idstring );
+                    // Save a reference for easy sorting later
+                    iconBrowser.iconBrowserItems.push($listItem);
                 });
+
+                $iconslist.append(IconBrowser.iconBrowserItems);
 
                 searchField.prop("disabled", false);
 
@@ -304,6 +309,20 @@ function toggleLinkState($el, init) {
 }
 
 Options.prototype = {
+    toggleKeywordOrder: function(e, init) {
+        e.preventDefault();
+
+        var $link = $(e.target);
+        if ( $link.data("action") === "keyword" ) {
+            this.modal.addClass("keyword-order");
+            if ( !init ) this.save( "keywordorder", true );
+        } else {
+            this.modal.removeClass("keyword-order");
+            if ( !init ) this.save( "keywordorder", false );
+        }
+
+        toggleLinkState($link);
+    },
     toggleMetaText: function(e, init) {
         e.preventDefault();
 
