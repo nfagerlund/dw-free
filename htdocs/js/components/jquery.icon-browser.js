@@ -138,7 +138,7 @@ IconBrowser.prototype = {
                         .data( "defaultkw", icon.keywords[0] )
                         .attr( "id", idstring );
                     // Save a reference for easy sorting later
-                    iconBrowser.iconBrowserItems.push($listItem);
+                    iconBrowser.iconBrowserItems.push($listItem[0]);
                 });
 
                 $iconslist.append(IconBrowser.iconBrowserItems);
@@ -291,6 +291,11 @@ function Options(modal, prefs) {
     $.extend(this, {
         modal: modal
     });
+    $("#js-icon-browser-order-toggle a")
+        .click(this.toggleMetaText.bind(this))
+        .filter(prefs.keywordorder ? "[data-action='keyword']" : "[data-action='date']")
+            .triggerHandler("click", true);
+
     $("#js-icon-browser-meta-toggle a")
         .click(this.toggleMetaText.bind(this))
         .filter(prefs.metatext ? "[data-action='text']" : "[data-action='no-text']")
@@ -369,7 +374,7 @@ $.fn.extend({
             var defaults = {
                 // triggerSelector: "#icon-browse-button, #icon-preview",
                 // modalId: "icon-browser",
-                // preferences: { metatext: true, smallicons: false }
+                // preferences: { metatext: true, smallicons: false, keywordorder: false }
             };
 
             new IconBrowser($(this), $.extend({}, defaults, options));
