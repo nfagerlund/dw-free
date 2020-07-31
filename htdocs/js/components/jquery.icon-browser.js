@@ -145,6 +145,12 @@ IconBrowser.prototype = {
                     iconBrowser.iconBrowserItems.push($listItem);
                 });
 
+                // If we're starting in keyword order, do an initial sort so we
+                // match the option button state.
+                if ( this.modal.hasClass('keyword-order') ) {
+                    this.sortByKeyword();
+                }
+
                 // Do the DOM manipulation in one pass.
                 $iconslist.append(iconBrowser.iconBrowserItems);
 
