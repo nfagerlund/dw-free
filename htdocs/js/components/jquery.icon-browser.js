@@ -130,9 +130,7 @@ IconBrowser.prototype = {
                         });
                     }
 
-                    var $comment = ( icon.comment != "" ) ? $("<small class='icon-browser-item-comment'></small>").text( icon.comment ) : "";
-
-                    var $meta = $("<div class='icon-browser-item-meta'></div>").append($keywords).append($comment);
+                    var $meta = $("<div class='icon-browser-item-meta'></div>").append($keywords);
                     var $item = $("<div class='icon-browser-item'></div>").append($img).append($meta);
                     var $listItem = $("<li></li>").append($item)
                         .data( "keywords", icon.keywords.join(" ").toLocaleUpperCase() )
