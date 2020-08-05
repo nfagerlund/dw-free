@@ -185,6 +185,10 @@
         grid-template-columns: repeat(auto-fill, 58px);
     }
 
+    .icon-browser-icon-image a {
+        cursor: pointer; // since it has no href.
+    }
+
     .icon-browser-icon-image img {
         max-width: 100%;
         height: auto;
