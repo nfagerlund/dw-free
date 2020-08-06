@@ -202,7 +202,7 @@
         }
         .icon-browser-item {
             grid-template-columns: 58px 1fr;
-            grid-template-rows: minmax(58px, 1fr);
+            grid-template-rows: 1fr;
         }
         // Icon aligns w/ start of text.
         .icon-browser-icon-image {
@@ -216,6 +216,9 @@
             grid-template-columns: repeat(auto-fill, 58px);
         }
         // Icons can sit on the ground again.
+        .icon-browser-item {
+            grid-template-rows: minmax(58px, 1fr);
+        }
         .icon-browser-icon-image {
             align-self: end;
             justify-self: center;
