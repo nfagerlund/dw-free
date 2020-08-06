@@ -88,7 +88,8 @@
             margin-right: 2em;
 
             @supports (display: flex) {
-                margin-right: 0;
+                margin-right: .4rem;
+                margin-left: .4rem;
             }
 
             margin-bottom: 1rem;
@@ -108,8 +109,7 @@
         text-decoration: none;
         border-width: 1px;
         border-style: solid;
-        margin: .2em;
-        margin-left: 0;
+        margin: .2em 0 0;
         padding: .1em .3em;
         line-height: 1.5;
         transition-duration: 300ms;
@@ -121,8 +121,6 @@
             // do the inverted colors thing you see in site skins. But border
             // thickness plus an icon will do in a pinch.
             border-width: 3px;
-            margin: calc(.2em - 2px); // absorb extra border size
-            margin-left: 0;
 
             &::before {
                 content: "✓ ";
@@ -185,18 +183,22 @@
         grid-template-columns: repeat(auto-fill, 58px);
     }
 
-    .icon-browser-icon-image a {
-        cursor: pointer; // since it has no href.
-    }
+    .icon-browser-icon-image {
+        height: 114px; // align keywords in large+text mode
 
-    .icon-browser-icon-image img {
-        max-width: 100%;
-        height: auto;
-        // Foundation's .th thumbnail class sets images to display: inline-block
-        // instead of inline, which makes border-box sizing affect their
-        // height/width attributes. So without this, a 100 x 100 icon will
-        // display as 92 x 92.
-        box-sizing: content-box;
+        a {
+            cursor: pointer; // since it has no href.
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            // Foundation's .th thumbnail class sets images to display: inline-block
+            // instead of inline, which makes border-box sizing affect their
+            // height/width attributes. So without this, a 100 x 100 icon will
+            // display as 92 x 92.
+            box-sizing: content-box;
+        }
     }
 
     &.small-icons {
