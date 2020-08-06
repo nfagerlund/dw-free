@@ -110,23 +110,29 @@
         border-width: 1px;
         border-style: solid;
         margin: 0 0 .2em;
-        padding: .1em .3em;
+        padding: calc(.1em - 2px) calc(.3em - 2px);
         line-height: 1.5;
         transition-duration: 300ms;
         transition-timing-function: ease-out;
         transition-property: color, background-color;
 
-        &::before {
-            content: "✓ ";
-            opacity: 1;
-        }
-
         &.active, &.inactive-toggle {
             // Journal styles don't know about ".active" controls so they don't
             // do the inverted colors thing you see in site skins. But border
-            // thickness plus an icon will do in a pinch.
+            // thickness will do in a pinch.
             border-width: 3px;
+            padding: .1em .3em;
+        }
+    }
 
+    // Add a checkmark to make the options extra-clear.
+    .icon-browser-options a {
+        &::before {
+            content: "✓ ";
+            opacity: 0;
+        }
+
+        &.inactive-toggle {
             &::before {
                 opacity: 1;
             }
