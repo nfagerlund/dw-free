@@ -131,6 +131,7 @@
     .icon-browser-item-meta {
         word-wrap: break-word;
         overflow-wrap: break-word;
+        min-width: 0; // makes children shrinkable by grid/flex
         font-size: smaller;
     }
 
@@ -201,7 +202,7 @@
         }
         .icon-browser-item {
             grid-template-columns: 58px 1fr;
-            grid-template-rows: 1fr;
+            grid-template-rows: minmax(58px, 1fr);
         }
         // Icon aligns w/ start of text.
         .icon-browser-icon-image {
