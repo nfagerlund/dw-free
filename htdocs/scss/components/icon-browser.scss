@@ -195,7 +195,7 @@
     .icon-browser-item {
         display: grid;
         grid-template-columns: 1fr;
-        grid-template-rows: 112px 1fr;
+        grid-template-rows: 108px 1fr;
         grid-row-gap: .5em;
         grid-column-gap: .5em;
     }
@@ -209,6 +209,13 @@
         margin-bottom: .5em;
         @supports (display: grid) {
             margin-bottom: 0;
+        }
+    }
+
+    // Large + notext: get rid of extra vertical gap
+    &.no-meta {
+        .icon-browser-item {
+            grid-row-gap: 0;
         }
     }
 
