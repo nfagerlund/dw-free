@@ -183,8 +183,17 @@
         grid-template-columns: repeat(auto-fill, 58px);
     }
 
+    .icon-browser-item {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 112px 1fr;
+        grid-row-gap: .5em;
+        grid-column-gap: .5em;
+    }
+
     .icon-browser-icon-image {
-        height: 114px; // align keywords in large+text mode
+        align-self: end;
+        justify-self: center;
 
         a {
             cursor: pointer; // since it has no href.
