@@ -110,6 +110,7 @@ IconBrowser.prototype = {
                     var $img = $("<img />").attr( {
                             src: icon.url,
                             alt: icon.alt,
+                            title: icon.keywords.join(', '),
                             height: icon.height,
                             width: icon.width,
                             role: "button",
