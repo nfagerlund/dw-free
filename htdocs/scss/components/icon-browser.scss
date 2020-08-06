@@ -146,6 +146,7 @@
         border-color: inherit;
     }
 
+    // Main grid
     .js-icon-browser-icon-grid {
         list-style: none;
         padding: 0;
@@ -178,11 +179,7 @@
         }
     }
 
-    // Pack em in:
-    &.small-icons.no-meta .js-icon-browser-icon-grid {
-        grid-template-columns: repeat(auto-fill, 58px);
-    }
-
+    // Per-item grid
     .icon-browser-item {
         display: grid;
         grid-template-columns: 1fr;
@@ -191,12 +188,45 @@
         grid-column-gap: .5em;
     }
 
+    // Icons sit on the ground, centered.
     .icon-browser-icon-image {
         align-self: end;
         justify-self: center;
+    }
 
+    // Small + text: Bigger cell width, icon beside text.
+    &.small-icons {
+        .js-icon-browser-icon-grid {
+            grid-template-columns: repeat(auto-fill, 180px);
+        }
+        .icon-browser-item {
+            grid-template-columns: 58px 1fr;
+            grid-template-rows: 1fr;
+        }
+        // Icon aligns w/ start of text.
+        .icon-browser-icon-image {
+            align-self: start;
+        }
+    }
+
+    // small + notext: shrink main grid, item grid adjusts fine.
+    &.small-icons.no-meta {
+        .js-icon-browser-icon-grid {
+            grid-template-columns: repeat(auto-fill, 58px);
+        }
+        // Icons can sit on the ground again.
+        .icon-browser-icon-image {
+            align-self: end;
+            justify-self: center;
+        }
+    }
+
+    .icon-browser-icon-image {
         a {
             cursor: pointer; // since it has no href.
+            // Don't save useless space below the image:
+            display: block;
+            line-height: 0;
         }
 
         img {
