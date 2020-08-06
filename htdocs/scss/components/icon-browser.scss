@@ -204,6 +204,12 @@
     .icon-browser-icon-image {
         align-self: end;
         justify-self: center;
+
+        // Fallback for non-grid browsers
+        margin-bottom: .5em;
+        @supports (display: grid) {
+            margin-bottom: 0;
+        }
     }
 
     // Small + text: Bigger cell width, icon beside text.
