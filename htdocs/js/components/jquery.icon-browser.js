@@ -332,34 +332,27 @@ function Options(modal, prefs) {
     $.extend(this, {
         modal: modal
     });
-    $("#js-icon-browser-order-toggle a")
-        .click(this.toggleKeywordOrder.bind(this))
-        .filter(prefs.keywordorder ? "[data-action='keyword']" : "[data-action='date']")
-            .triggerHandler("click", true);
+    $("#js-icon-browser-order-option")
+        .on('change', this.toggleKeywordOrder.bind(this))
+        .filter(prefs.keywordorder ? "[value='keyword']" : "[value='date']")
+            .prop('checked', true).trigger('change', true);
 
-    $("#js-icon-browser-meta-toggle a")
-        .click(this.toggleMetaText.bind(this))
-        .filter(prefs.metatext ? "[data-action='text']" : "[data-action='no-text']")
-            .triggerHandler("click", true);
+    $("#js-icon-browser-meta-option")
+        .on('change', this.toggleMetaText.bind(this))
+        .filter(prefs.metatext ? "[value='text']" : "[value='no-text']")
+            .prop('checked', true).trigger('change', true);
 
-    $("#js-icon-browser-size-toggle a")
-        .click(this.toggleIconSize.bind(this))
-        .filter(prefs.smallicons ? "[data-action='small']" : "[data-action='large']")
-            .triggerHandler("click", true);
-}
-
-function toggleLinkState($el, init) {
-    $el.addClass("inactive-toggle")
-        .siblings()
-            .removeClass("inactive-toggle");
+    $("#js-icon-browser-size-option")
+        .on('change', this.toggleIconSize.bind(this))
+        .filter(prefs.smallicons ? "[value='small']" : "[value='large']")
+            .prop('checked', true).trigger('change', true);
 }
 
 Options.prototype = {
     toggleKeywordOrder: function(e, init) {
         e.preventDefault();
 
-        var $link = $(e.target);
-        if ( $link.data("action") === "keyword" ) {
+        if ( e.target.value === "keyword" ) {
             this.modal.addClass("keyword-order");
             this.modal.trigger("sortByKeyword.iconbrowser");
             if ( !init ) this.save( "keywordorder", true );
@@ -368,28 +361,22 @@ Options.prototype = {
             this.modal.trigger("sortByDate.iconbrowser");
             if ( !init ) this.save( "keywordorder", false );
         }
-
-        toggleLinkState($link);
     },
     toggleMetaText: function(e, init) {
         e.preventDefault();
 
-        var $link = $(e.target);
-        if ( $link.data("action") === "text" ) {
+        if ( e.target.value === "text" ) {
             this.modal.removeClass("no-meta");
             if ( !init ) this.save( "metatext", true );
         } else {
             this.modal.addClass("no-meta");
             if ( !init ) this.save( "metatext", false );
         }
-
-        toggleLinkState($link);
     },
     toggleIconSize: function(e, init) {
         e.preventDefault();
 
-        var $link = $(e.target);
-        if ( $link.data("action") === "large" ) {
+        if ( e.target.value === "large" ) {
             this.modal.removeClass("small-icons");
 
             if ( !init ) this.save( "smallicons", false );
@@ -398,8 +385,6 @@ Options.prototype = {
 
             if ( !init ) this.save( "smallicons", true );
         }
-
-        toggleLinkState($link);
     },
     save: function(option, value) {
         var params = {};
