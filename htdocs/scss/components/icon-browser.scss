@@ -96,11 +96,11 @@
             white-space: nowrap;
         }
 
-        // Revert ultra-fluffy Foundation styling for fieldsets, we don't have
+        // Override ultra-fluffy Foundation styling for fieldsets, we don't have
         // space for that nonsense.
         fieldset {
-            margin: unset;
-            padding: unset;
+            margin: 0;
+            padding: .3em .8em .6em;
         }
     }
 
