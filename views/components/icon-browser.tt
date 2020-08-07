@@ -24,7 +24,7 @@ the same terms as Perl itself.  For a copy of the license, please reference
 
         <div class="row">
             <div class="columns top-controls">
-                <form class="icon-browser-options" id="icon-browser-order-option">
+                <form class="icon-browser-options" id="js-icon-browser-order-option">
                     <fieldset>
                         <legend>Order</legend>
 
@@ -36,7 +36,7 @@ the same terms as Perl itself.  For a copy of the license, please reference
                     </fieldset>
                 </form>
 
-                <form class="icon-browser-options" id="icon-browser-meta-option">
+                <form class="icon-browser-options" id="js-icon-browser-meta-option">
                     <fieldset>
                         <legend>Icon keywords</legend>
 
@@ -48,7 +48,7 @@ the same terms as Perl itself.  For a copy of the license, please reference
                     </fieldset>
                 </form>
 
-                <form class="icon-browser-options" id="icon-browser-size-option">
+                <form class="icon-browser-options" id="js-icon-browser-size-option">
                     <fieldset>
                         <legend>Size</legend>
 
