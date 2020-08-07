@@ -334,17 +334,17 @@ function Options(modal, prefs) {
     });
     $("#js-icon-browser-order-option")
         .on('change', this.toggleKeywordOrder.bind(this))
-        .filter(prefs.keywordorder ? "[value='keyword']" : "[value='date']")
+        .find(prefs.keywordorder ? "[value='keyword']" : "[value='date']")
             .prop('checked', true).trigger('change', true);
 
     $("#js-icon-browser-meta-option")
         .on('change', this.toggleMetaText.bind(this))
-        .filter(prefs.metatext ? "[value='text']" : "[value='no-text']")
+        .find(prefs.metatext ? "[value='text']" : "[value='no-text']")
             .prop('checked', true).trigger('change', true);
 
     $("#js-icon-browser-size-option")
         .on('change', this.toggleIconSize.bind(this))
-        .filter(prefs.smallicons ? "[value='small']" : "[value='large']")
+        .find(prefs.smallicons ? "[value='small']" : "[value='large']")
             .prop('checked', true).trigger('change', true);
 }
 
