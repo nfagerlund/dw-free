@@ -95,6 +95,13 @@
             margin-bottom: 1rem;
             white-space: nowrap;
         }
+
+        // Revert ultra-fluffy Foundation styling for fieldsets, we don't have
+        // space for that nonsense.
+        fieldset {
+            margin: unset;
+            padding: unset;
+        }
     }
 
     p.icon-browser-help {
@@ -102,7 +109,7 @@
         margin-bottom: 1rem;
     }
 
-    .keyword, .icon-browser-options a {
+    .keyword {
         display: block;
         max-width: 100%;
         cursor: pointer;
@@ -122,20 +129,6 @@
             // thickness will do in a pinch.
             border-width: 3px;
             padding: .1em .3em;
-        }
-    }
-
-    // Add a checkmark to make the options extra-clear.
-    .icon-browser-options a {
-        &::before {
-            content: "✓ ";
-            opacity: 0;
-        }
-
-        &.inactive-toggle {
-            &::before {
-                opacity: 1;
-            }
         }
     }
 
