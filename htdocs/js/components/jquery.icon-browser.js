@@ -124,7 +124,10 @@ IconBrowser.prototype = {
                         $.each(icon.keywords, function(i, kw) {
                             iconBrowser.kwToIcon[kw] = idstring;
                             $keywords
-                                .append( $("<a class='keyword radius' role='button' tabindex='0' data-kw='" + kw + "'></a>").text(kw) )
+                                .append(
+                                    $("<a class='keyword radius' data-kw='" + kw + "'></a>")
+                                    .append( $("<button type='button'>").text(kw) )
+                                )
                                 .append(document.createTextNode(" "));
 
                         });

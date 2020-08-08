@@ -193,7 +193,7 @@
         grid-row-gap: .5em;
         grid-column-gap: .5em;
 
-        button {
+        button { // focusable/tabbable button wrappers around controls
             border: none;
             margin: 0;
             padding: 0;
