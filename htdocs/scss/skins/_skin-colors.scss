@@ -80,7 +80,7 @@ $queue-bg-color:       $form-bg-color !default;
 // miscellaneous active elements
 $global-active-bg:     $primary-color !default;
 $global-active-font-color: $primary-text-color !default;
-a.active, button.active {
+a.active {
     background-color: $global-active-bg;
     color: $global-active-font-color;
 
