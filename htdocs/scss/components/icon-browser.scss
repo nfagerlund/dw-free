@@ -51,7 +51,8 @@
     }
 
     #js-icon-browser-search {
-        width: auto; // don't stretch to 100% on site skin
+        width: 8em; // don't stretch to 100% on site skin
+        flex-grow: 1;
         @media (pointer: coarse) {
             font-size: 16px; // dramatic woodchuck repellent
         }
