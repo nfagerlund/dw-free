@@ -130,13 +130,14 @@
     // for controls, so we can fit in on journal styles while still being
     // accessible.
     a.color-wrapper {
+        display: block;
         text-decoration: none;
     }
 
     // Styles specifically for keyword buttons
     .keyword {
         display: block;
-        max-width: 100%;
+        width: 100%;
         cursor: pointer;
         text-decoration: none;
         border-width: 1px;
