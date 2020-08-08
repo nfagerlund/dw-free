@@ -26,13 +26,13 @@ the same terms as Perl itself.  For a copy of the license, please reference
             <div class="columns top-controls">
                 <form class="icon-browser-options" id="js-icon-browser-order-option">
                     <fieldset>
-                        <legend>Order</legend>
+                        <legend>Order by</legend>
 
                         <input type="radio" name="js-icon-browser-order" value="date" id="js-icon-browser-order-date">
-                        <label for="js-icon-browser-order-date">By date</label>
+                        <label for="js-icon-browser-order-date">Date</label>
 
                         <input type="radio" name="js-icon-browser-order" value="keyword" id="js-icon-browser-order-keyword">
-                        <label for="js-icon-browser-order-keyword">By keyword</label>
+                        <label for="js-icon-browser-order-keyword">Keyword</label>
                     </fieldset>
                 </form>
 
