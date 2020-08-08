@@ -126,6 +126,13 @@
         line-height: inherit;
     }
 
+    // Hack: We wrap buttons in a dummy 'a' element to grab an appropriate color
+    // for controls, so we can fit in on journal styles while still being
+    // accessible.
+    a.color-wrapper {
+        text-decoration: none;
+    }
+
     // Styles specifically for keyword buttons
     .keyword {
         display: block;

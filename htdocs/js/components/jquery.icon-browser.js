@@ -114,7 +114,7 @@ IconBrowser.prototype = {
                             height: icon.height,
                             width: icon.width,
                             "class": "th" } )
-                        .wrap("<a>").parent()
+                        .wrap("<a class='color-wrapper'>").parent()
                         .wrap("<button type='button'>").parent()
                         .wrap("<div class='icon-browser-icon-image'></div>").parent();
                     var $keywords = "";
@@ -127,7 +127,7 @@ IconBrowser.prototype = {
                                 .attr('data-kw', kw)
                                 .text(kw);
                             $keywords
-                                .append(kwButton)
+                                .append( $("<a class='color-wrapper'>").append(kwButton) )
                                 .append(document.createTextNode(" "));
 
                         });
