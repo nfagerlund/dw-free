@@ -226,7 +226,7 @@ IconBrowser.prototype = {
     doSelect: function($container, keyword) {
         var iconBrowser = this;
 
-        $("#" + iconBrowser.selectedId).find(".th, .keyword").removeClass("active");
+        $("#" + iconBrowser.selectedId).find(".th, .keywords a").removeClass("active");
 
         if ( ! $container || $container.length === 0 ) {
             // more like DON'Tselect.
@@ -247,8 +247,11 @@ IconBrowser.prototype = {
         iconBrowser.selectedId = $container.attr("id");
         $container
             .show()
-            .find(".th, .keyword[data-kw='" + iconBrowser.selectedKeyword + "']")
+            .find(".th")
                 .addClass("active");
+        $container
+            .find(".keyword[data-kw='" + iconBrowser.selectedKeyword + "']")
+                .closest("a").addClass("active");
     },
     updateOwner: function(e) {
         if (this.selectedKeyword) {
