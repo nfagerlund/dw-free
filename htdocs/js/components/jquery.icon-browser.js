@@ -114,8 +114,8 @@ IconBrowser.prototype = {
                             height: icon.height,
                             width: icon.width,
                             "class": "th" } )
-                        .wrap("<button type='button'>").parent()
                         .wrap("<a>").parent()
+                        .wrap("<button type='button'>").parent()
                         .wrap("<div class='icon-browser-icon-image'></div>").parent();
                     var $keywords = "";
                     if ( icon.keywords ) {
