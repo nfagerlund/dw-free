@@ -123,8 +123,9 @@ IconBrowser.prototype = {
 
                         $.each(icon.keywords, function(i, kw) {
                             iconBrowser.kwToIcon[kw] = idstring;
-                            var kwLink = $("<a class='keyword radius' data-kw='" + kw + "'></a>").text(kw);
-                            var kwButton = $("<button type='button'>").append(kwLink);
+                            var kwButton = $("<button type='button' class='keyword'>")
+                                .attr('data-kw', kw)
+                                .text(kw);
                             $keywords
                                 .append(kwButton)
                                 .append(document.createTextNode(" "));
@@ -207,7 +208,7 @@ IconBrowser.prototype = {
 
         // this may be on either the icon or the keyword
         var container = $(e.target).closest("li");
-        var keyword = $(e.target).closest("a.keyword");
+        var keyword = $(e.target).closest(".keyword");
 
         // set the active icon and keyword:
         this.doSelect(container, keyword.length > 0 ? keyword.text() : null);
@@ -225,7 +226,7 @@ IconBrowser.prototype = {
     doSelect: function($container, keyword) {
         var iconBrowser = this;
 
-        $("#" + iconBrowser.selectedId).find(".th, a").removeClass("active");
+        $("#" + iconBrowser.selectedId).find(".th, .keyword").removeClass("active");
 
         if ( ! $container || $container.length === 0 ) {
             // more like DON'Tselect.
@@ -246,7 +247,7 @@ IconBrowser.prototype = {
         iconBrowser.selectedId = $container.attr("id");
         $container
             .show()
-            .find(".th, a[data-kw='" + iconBrowser.selectedKeyword + "']")
+            .find(".th, .keyword[data-kw='" + iconBrowser.selectedKeyword + "']")
                 .addClass("active");
     },
     updateOwner: function(e) {

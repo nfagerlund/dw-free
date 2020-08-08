@@ -110,6 +110,22 @@
         margin-bottom: 1rem;
     }
 
+    // Style reset for icon/keyword buttons
+    .icon-browser-item button {
+        display: block;
+        border: none;
+        margin: 0;
+        padding: 0;
+        background: none;
+        border-radius: initial;
+        box-shadow: none;
+        color: inherit;
+        text-align: inherit;
+        font-weight: inherit;
+        text-decoration: inherit;
+        line-height: inherit;
+    }
+
     .keyword {
         display: block;
         max-width: 100%;
@@ -124,7 +140,7 @@
         transition-timing-function: ease-out;
         transition-property: color, background-color;
 
-        &.active, &.inactive-toggle {
+        &.active {
             // Journal styles don't know about ".active" controls so they don't
             // do the inverted colors thing you see in site skins. But border
             // thickness will do in a pinch.
@@ -192,13 +208,6 @@
         grid-template-rows: 108px 1fr;
         grid-row-gap: .5em;
         grid-column-gap: .5em;
-
-        button { // focusable/tabbable button wrappers around controls
-            border: none;
-            margin: 0;
-            padding: 0;
-            background: none;
-        }
     }
 
     // Icons sit on the ground, centered.
