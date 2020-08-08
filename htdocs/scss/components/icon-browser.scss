@@ -150,13 +150,13 @@
         transition-timing-function: ease-out;
         transition-property: color, background-color;
 
-        &.active {
-            // Journal styles don't know about ".active" controls so they don't
-            // do the inverted colors thing you see in site skins. But border
-            // thickness will do in a pinch.
-            border-width: 3px;
-            padding: .1em .3em;
-        }
+    }
+    a.active .keyword {
+        // Journal styles don't know about site skins' "a.active" controls so
+        // they don't do the inverted colors thing. But border thickness will do
+        // in a pinch.
+        border-width: 3px;
+        padding: .1em .3em;
     }
 
     .icon-browser-item-meta {
