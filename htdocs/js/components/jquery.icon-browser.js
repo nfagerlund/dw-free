@@ -113,9 +113,8 @@ IconBrowser.prototype = {
                             title: icon.keywords.join(', '),
                             height: icon.height,
                             width: icon.width,
-                            role: "button",
-                            tabindex: "0",
                             "class": "th" } )
+                        .wrap("<button type='button'>").parent()
                         .wrap("<a>").parent()
                         .wrap("<div class='icon-browser-icon-image'></div>").parent();
                     var $keywords = "";
