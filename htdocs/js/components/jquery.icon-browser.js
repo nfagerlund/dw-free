@@ -37,7 +37,7 @@ function IconBrowser($el, options) {
 
             scrollPositionDogear = $(window).scrollTop();
             iconBrowser.modal.removeAttr('tabindex'); // WHY does foundation.reveal set this.
-            iconBrowser.focusSearch();
+            iconBrowser.focusActive();
         })
         .on('closed.fndtn.reveal', modalSelector, function(e) {
             // hackety hack -- being triggered on both 'closed' and 'closed.fndtn.reveal'; just want one
@@ -114,7 +114,7 @@ IconBrowser.prototype = {
                             height: icon.height,
                             width: icon.width,
                             "class": "th" } )
-                        .wrap("<button type='button'>").parent()
+                        .wrap("<button type='button' class='icon-browser-icon-button'>").parent()
                         .wrap("<a class='color-wrapper'>").parent()
                         .wrap("<div class='icon-browser-icon-image'></div>").parent();
                     var $keywords = "";
@@ -185,8 +185,12 @@ IconBrowser.prototype = {
 
         this.listenersRegistered = true;
     },
-    focusSearch: function() {
-        $('#js-icon-browser-search').focus();
+    focusActive: function() {
+        if ( this.selectedId ) {
+            $('#' + this.selectedId).find("button.icon-browser-icon-button").focus();
+        } else {
+            $('#js-icon-browser-search').focus();
+        }
     },
     keyboardNav: function(e) {
         if ( $(e.target).is('#js-icon-browser-search') ) return;
