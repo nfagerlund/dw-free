@@ -111,7 +111,7 @@
     }
 
     // Style reset for icon/keyword buttons
-    .icon-browser-item button {
+    button {
         display: block;
         border: none;
         margin: 0;
@@ -126,6 +126,7 @@
         line-height: inherit;
     }
 
+    // Styles specifically for keyword buttons
     .keyword {
         display: block;
         max-width: 100%;
