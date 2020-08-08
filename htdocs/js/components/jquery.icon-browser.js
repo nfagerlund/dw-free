@@ -298,13 +298,6 @@ IconBrowser.prototype = {
         this.iconsList.append(this.iconBrowserItems); // updates in-place.
     },
     filter: function(e) {
-        if (this.selectedKeyword) {
-            if ( e.key === 'Enter' || (! e.key && e.keyCode === 13) ) {
-                this.updateOwner.call(this, e);
-                return;
-            }
-        }
-
         var val = $(e.target).val().toLocaleUpperCase();
 
         if ( ! this.contentElement ) {
@@ -322,14 +315,6 @@ IconBrowser.prototype = {
                     $(this).css('display', ''); // Reason we aren't using .show() is bc it forcibly sets 'display: block'.
                 }
             });
-
-        var $visible = $("#js-icon-browser-content li:visible");
-        if ( $visible.length == 1 ) {
-            this.doSelect($visible, null);
-        } else if ( ! $visible.is('#' + this.selectedId) ) {
-            // The previously selected icon doesn't match the filter anymore, so deselect it.
-            this.doSelect(null, null);
-        }
     },
     resetFilter: function() {
         $("#js-icon-browser-search").val("");
