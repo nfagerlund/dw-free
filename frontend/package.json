@@ -3,7 +3,6 @@
     "broccoli": "^3.4.2",
     "broccoli-clean-css": "^2.0.1",
     "broccoli-cli": "^1.0.0",
-    "broccoli-env": "^0.0.1",
     "broccoli-funnel": "^3.0.3",
     "broccoli-merge-trees": "^4.2.0",
     "broccoli-multifilter": "^2.0.0",
