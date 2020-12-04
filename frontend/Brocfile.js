@@ -10,8 +10,9 @@ import { execSync } from 'child_process';
 
 export default () => {
   let myDirs = execSync("find $LJHOME -type d -path *htdocs").toString().split("\n");
-
   let htdocs = merge(myDirs.map( dir => new WatchedDir(dir) ), {overwrite: true});
+  // DW_DEV is probably "1" (as string) or undefined. 1 is the only "yes" value.
+  let isProduction = parseInt(process.env.DW_DEV) !== 1;
 
   // Images: whatever
   let imgDir = new Funnel(htdocs, {
@@ -27,9 +28,7 @@ export default () => {
     annotation: 'JS dir (copy)',
   });
 
-  // Slightly ugly check because JS's truthiness settings are odd
-  let isDev = process.env.DW_DEV;
-  if (!isDev || isDev==="0") {
+  if (isProduction) {
     jsDir = uglify(jsDir, {
       annotation: 'JS dir (uglify)',
       hiddenSourceMap: true, // until we stop w/ concat_res, they're useless.
@@ -44,7 +43,7 @@ export default () => {
   });
 
   // CSS compression for prod:
-  if (process.env.NODE_ENV === 'production') {
+  if (isProduction) {
     let compressed = new CleanCSS(stcDir, {
       annotation: 'cleaned CSS from stc dir',
     });
