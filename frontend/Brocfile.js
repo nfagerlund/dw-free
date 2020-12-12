@@ -9,9 +9,10 @@ import CompileScssMulti from './compile-scss-multi';
 import { execSync } from 'child_process';
 
 export default () => {
+  // TODO: This is an artifact of how LJ::get_all_directories works, so if that ever gets simplified, so can this.
   let myDirs = execSync("find $LJHOME -type d -path *htdocs").toString().split("\n");
   let htdocs = merge(myDirs.map( dir => new WatchedDir(dir) ), {overwrite: true});
-  // DW_DEV is probably "1" (as string) or undefined. 1 is the only "yes" value.
+  // DW_DEV is "1" (as string) or undefined. 1 is the only "yes" value.
   let isProduction = parseInt(process.env.DW_DEV) !== 1;
 
   // Images: whatever
