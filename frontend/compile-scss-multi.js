@@ -18,7 +18,7 @@ const fs = require('fs');
 const writeFile = RSVP.denodeify(fs.writeFile);
 
 
-class CompileAllScss extends MultiFilter {
+class CompileScssMulti extends MultiFilter {
     constructor(inputNodes, options) {
         super(inputNodes, options);
         options = options || {};
@@ -79,4 +79,4 @@ class CompileAllScss extends MultiFilter {
     }
 }
 
-export default CompileAllScss;
+export default CompileScssMulti;

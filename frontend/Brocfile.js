@@ -5,7 +5,7 @@ const uglify = require('broccoli-uglify-sourcemap');
 const CleanCSS = require('broccoli-clean-css');
 const Fiber = require('fibers');
 
-import CompileAllScss from './compile-all-scss';
+import CompileScssMulti from './compile-scss-multi';
 import { execSync } from 'child_process';
 
 export default () => {
@@ -68,7 +68,7 @@ export default () => {
   if (process.env.NODE_ENV === 'production') {
     sassOptions.outputStyle = 'compressed';
   }
-  let scssOutput = new CompileAllScss([scssDir], sassOptions);
+  let scssOutput = new CompileScssMulti([scssDir], sassOptions);
   let scssFinal = new Funnel(scssOutput, {
     srcDir: '.',
     destDir: 'stc/css',
