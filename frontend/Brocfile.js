@@ -6,6 +6,7 @@ const CleanCSS = require('broccoli-clean-css');
 const Fiber = require('fibers');
 
 import CompileScssMulti from './compile-scss-multi';
+import modules from './modules';
 import { execSync } from 'child_process';
 
 export default () => {
@@ -84,7 +85,7 @@ export default () => {
     annotation: 'SCSS dir (copy to stc/css)',
   });
 
-  return merge([imgDir, jsDir, stcDir, scssFinal], {
+  return merge([imgDir, jsDir, stcDir, scssFinal, ...modules], {
     annotation: 'Final merge',
     overwrite: true,
   });
