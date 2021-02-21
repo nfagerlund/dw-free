@@ -8,12 +8,14 @@
     "broccoli-multifilter": "^2.0.0",
     "broccoli-source": "^3.0.0",
     "broccoli-terser-sourcemap": "^4.1.0",
+    "modernizr": "^3.11.4",
     "fibers": "^5.0.0",
     "rsvp": "^4.8.5",
     "sass": "^1.26.10",
     "walk-sync": "^2.2.0"
   },
   "scripts": {
+    "prebuild": "node ./prebuild.js",
     "build": "broccoli build ../build/static"
   }
 }
