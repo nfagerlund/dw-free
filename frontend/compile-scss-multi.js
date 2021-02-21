@@ -11,7 +11,6 @@ const sass = require('sass');
 const walkSync = require('walk-sync');
 const RSVP = require('rsvp');
 const path = require('path');
-const mkdirp = require('mkdirp');
 const fs = require('fs');
 const writeFile = RSVP.denodeify(fs.writeFile);
 
@@ -49,7 +48,7 @@ class CompileScssMulti extends MultiFilter {
                 let fullOutputPath = path.join(outputDirectory, relativePath.replace(/\.scss$/, '.css'));
 
                 // Make sure there's somewhere to put it
-                mkdirp.sync(path.dirname(fullOutputPath));
+                fs.mkdirSync(path.dirname(fullOutputPath), { recursive: true });
 
                 let sassOptions = {
                     file: fullInputPath,
