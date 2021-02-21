@@ -1,7 +1,7 @@
 const { WatchedDir } = require('broccoli-source');
 const Funnel = require('broccoli-funnel');
 const merge = require('broccoli-merge-trees');
-const uglify = require('broccoli-uglify-sourcemap');
+const Terser = require('broccoli-terser-sourcemap');
 const CleanCSS = require('broccoli-clean-css');
 const Fiber = require('fibers');
 
@@ -32,8 +32,8 @@ export default () => {
 
   // JS compression for prod:
   if (isProduction) {
-    jsDir = uglify(jsDir, {
-      annotation: 'JS dir (uglify)',
+    jsDir = new Terser(jsDir, {
+      annotation: 'JS dir (compress)',
       hiddenSourceMap: true, // until we stop w/ concat_res, they're useless.
     });
   }
