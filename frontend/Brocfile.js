@@ -34,7 +34,12 @@ export default () => {
   if (isProduction) {
     jsDir = new Terser(jsDir, {
       annotation: 'JS dir (compress)',
-      hiddenSourceMap: true, // until we stop w/ concat_res, they're useless.
+      terser: {
+        compress: true,
+        mangle: true,
+        sourceMap: false, // concat_res makes sourcemaps useless
+      },
+      hiddenSourceMap: true, // concat_res makes sourcemaps useless
     });
   }
 
