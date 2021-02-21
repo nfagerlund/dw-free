@@ -1,12 +1,10 @@
-// This copies a bunch of code from broccoli-sass-source-maps -- seems that most
-// people want to compile ONE sass file for their app, and that's absolutely not
-// how we roll over here.
+// This plugin takes ONE inputPath of scss files, plus optionally some extra
+// include paths. Its output includes every SCSS file that isn't a "_partial" as
+// a separate output file
 
-// Anyway, here's my thinking: give it an scss directory, and optionally some
-// extra include paths, and have it compile all non-partials to thing.css files. Ask
-// Sass itself what the dependencies for each file were, and use those for
-// MultiFilter's caching/recompiling behavior.
-// Gonna be lazy and expect only a single inputPath, ignoring others.
+// This copies some logic from the broccoli-sass-source-maps library, but does
+// different stuff with it. (That plugin expects that you want to compile ONE
+// omnibus CSS file for your app, and we don't.)
 
 const MultiFilter = require('broccoli-multifilter');
 const sass = require('sass');
@@ -16,7 +14,6 @@ const path = require('path');
 const mkdirp = require('mkdirp');
 const fs = require('fs');
 const writeFile = RSVP.denodeify(fs.writeFile);
-
 
 class CompileScssMulti extends MultiFilter {
     constructor(inputNodes, options) {
@@ -42,7 +39,7 @@ class CompileScssMulti extends MultiFilter {
     async build() {
         // Ignoring more than one inputPath.
         let inputPath = this.inputPaths[0];
-        // Exclude _partials.scss
+        // Exclude _partial.scss
         let inputFiles = walkSync(inputPath).filter( inFile => path.extname(inFile) === '.scss' && path.basename(inFile).slice(0,1) !== '_' );
 
         return this.buildAndCache(
@@ -68,6 +65,7 @@ class CompileScssMulti extends MultiFilter {
                 // actually write it
                 await writeFile(fullOutputPath, result.css);
 
+                // Dependencies and caching only affect watch mode, but sure, why not.
                 return {
                     dependencies: [
                         fullInputPath,

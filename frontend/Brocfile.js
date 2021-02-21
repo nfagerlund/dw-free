@@ -23,13 +23,14 @@ export default () => {
     annotation: 'Image dir (copy)',
   });
 
-  // Vanilla ES5 JS: send it through the ES5 uglifier, if in prod.
+  // Classic JavaScript stuff
   let jsDir = new Funnel(htdocs, {
     srcDir: 'js',
     destDir: 'js',
     annotation: 'JS dir (copy)',
   });
 
+  // JS compression for prod:
   if (isProduction) {
     jsDir = uglify(jsDir, {
       annotation: 'JS dir (uglify)',
@@ -37,7 +38,8 @@ export default () => {
     });
   }
 
-  // Vanilla CSS PLUS some maybe weird stuff? just set it down over there, don't jostle it too hard.
+  // Vanilla CSS PLUS some maybe weird stuff like old RTE? just set it down over
+  // there, don't jostle it too hard.
   let stcDir = new Funnel(htdocs, {
     srcDir: 'stc',
     destDir: 'stc',
