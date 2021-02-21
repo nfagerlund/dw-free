@@ -10,7 +10,7 @@ import { execSync } from 'child_process';
 
 export default () => {
   // TODO: This is tied to LJ::get_all_directories. If that gets simplified, so can this.
-  let myDirs = execSync("find $LJHOME -type d -path *htdocs")
+  let myDirs = execSync("find -L $LJHOME -type d -path *htdocs")
     .toString().split("\n").filter(s => s !== '');
   let htdocs = merge(myDirs.map( dir => new WatchedDir(dir) ), {overwrite: true});
   // DW_DEV must be set to "1" on dev servers.
