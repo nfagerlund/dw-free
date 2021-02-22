@@ -8,7 +8,7 @@ import Funnel from 'broccoli-funnel';
 let modernizr = new Funnel(
   './dist/modernizr', {
     files: ['custom.modernizr.js'],
-    destDir: 'js/vendor',
+    destDir: 'js/foundation/vendor',
   }
 );
 
