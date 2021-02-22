@@ -6,12 +6,12 @@
 // different stuff with it. (That plugin expects that you want to compile ONE
 // omnibus CSS file for your app, and we don't.)
 
-const MultiFilter = require('broccoli-multifilter');
-const sass = require('sass');
-const walkSync = require('walk-sync');
-const RSVP = require('rsvp');
-const path = require('path');
-const fs = require('fs');
+import MultiFilter from 'broccoli-multifilter';
+import sass from 'sass';
+import walkSync from 'walk-sync';
+import RSVP from 'rsvp';
+import path from 'path';
+import fs from 'fs';
 const writeFile = RSVP.denodeify(fs.writeFile);
 
 class CompileScssMulti extends MultiFilter {

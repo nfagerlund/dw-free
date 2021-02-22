@@ -4,10 +4,10 @@ import merge from 'broccoli-merge-trees';
 import Terser from 'broccoli-terser-sourcemap';
 import CleanCSS from 'broccoli-clean-css';
 import Fiber from 'fibers';
-
-import CompileScssMulti from './compile-scss-multi';
-import modules from './modules';
 import { execSync } from 'child_process';
+
+import CompileScssMulti from './compile-scss-multi.js';
+import modules from './modules.js';
 
 export default () => {
   // TODO: This is tied to LJ::get_all_directories. If that gets simplified, so can this.
