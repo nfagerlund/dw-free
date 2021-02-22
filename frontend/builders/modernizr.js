@@ -11,6 +11,7 @@ module.exports = function() {
     options: [
       'html5shiv',
       'addTest',
+      'setClasses',
     ],
     "feature-detects": [
       "css/transforms",
