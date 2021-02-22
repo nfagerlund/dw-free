@@ -1,9 +1,9 @@
-const { WatchedDir } = require('broccoli-source');
-const Funnel = require('broccoli-funnel');
-const merge = require('broccoli-merge-trees');
-const Terser = require('broccoli-terser-sourcemap');
-const CleanCSS = require('broccoli-clean-css');
-const Fiber = require('fibers');
+import { WatchedDir } from 'broccoli-source';
+import Funnel from 'broccoli-funnel';
+import merge from 'broccoli-merge-trees';
+import Terser from 'broccoli-terser-sourcemap';
+import CleanCSS from 'broccoli-clean-css';
+import Fiber from 'fibers';
 
 import CompileScssMulti from './compile-scss-multi';
 import modules from './modules';
