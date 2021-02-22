@@ -22,7 +22,7 @@ module.exports = function() {
     ],
   }, output => {
     // Hack: alias (bad, deprecated) touchevents feature to its old name.
-    output += "\n; Modernizr.addTest('touch', Modernizer.touchevents);"
+    output += "\n; Modernizr.addTest('touch', Modernizr.touchevents);"
     fs.mkdirSync(`${dist}/modernizr`, { recursive: true });
     fs.writeFileSync(`${dist}/modernizr/custom.modernizr.js`, output);
   });
