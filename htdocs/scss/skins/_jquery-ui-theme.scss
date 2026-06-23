@@ -2,11 +2,15 @@
     background-color: $input-bg-color;
     border: 1px solid $input-border-color;
 
+    .ui-menu-item {
+        width: 100%;
+    }
+
     a {
         color: $input-font-color;
     }
 
-    .ui-state-focus {
+    .ui-state-active {
         background-color: $primary-color;
         color: $primary-text-color;
         @include radius();
